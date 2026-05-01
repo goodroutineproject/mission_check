@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6일 장 대사 리셋 | good routine project</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#000;color:#fff;font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+.app{width:100%;max-width:400px;margin:0 auto;}
+.screen{display:none;}
+.screen.active{display:block;}
+.logo-row{display:flex;align-items:center;gap:8px;margin-bottom:2rem;}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:#9377f4;}
+.logo-text{color:#9377f4;font-size:12px;letter-spacing:0.08em;font-weight:500;}
+.title{color:#fff;font-size:22px;font-weight:700;line-height:1.3;margin-bottom:6px;}
+.subtitle{color:#9377f4;font-size:13px;margin-bottom:1.25rem;}
+.desc{color:#888;font-size:13px;line-height:1.7;margin-bottom:2rem;}
+.section-label{color:#fff;font-size:13px;font-weight:600;margin-bottom:12px;}
+.guide-table{border:0.5px solid #333;border-radius:10px;overflow:hidden;margin-bottom:8px;}
+.guide-table .row{display:grid;grid-template-columns:72px 1fr 1fr 1fr;}
+.guide-table .row+.row{border-top:0.5px solid #333;}
+.guide-table .cell{padding:10px 8px;border-right:0.5px solid #333;}
+.guide-table .cell:last-child{border-right:none;}
+.guide-table .head{background:#1a1a1a;}
+.guide-table .head .stage{color:#9377f4;font-size:10px;font-weight:600;}
+.guide-table .head .day{color:#555;font-size:10px;margin-top:2px;}
+.guide-table .lv{color:#fff;font-size:12px;font-weight:500;}
+.guide-table .h{color:#fff;font-size:13px;text-align:center;}
+.note{color:#555;font-size:11px;margin-bottom:2rem;}
+.btn{width:100%;background:#9377f4;border:none;border-radius:8px;padding:14px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn:active{opacity:0.85;}
+.btn-outline{background:transparent;border:0.5px solid #9377f4;color:#9377f4;margin-top:10px;}
+.input-wrap{margin-bottom:1.5rem;}
+.input-label{color:#888;font-size:12px;margin-bottom:8px;}
+input[type=text]{width:100%;background:#1a1a1a;border:0.5px solid #333;border-radius:8px;padding:12px 14px;color:#fff;font-size:15px;font-family:'DM Sans',sans-serif;outline:none;}
+input[type=text]:focus{border-color:#9377f4;}
+.day-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:1.5rem;}
+.day-btn{background:#1a1a1a;border:0.5px solid #333;border-radius:8px;padding:10px 4px;text-align:center;cursor:pointer;color:#888;font-size:12px;font-family:'DM Sans',sans-serif;}
+.day-btn.selected{border-color:#9377f4;color:#9377f4;background:#1a1050;}
+.hour-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:2rem;}
+.hour-btn{background:#1a1a1a;border:0.5px solid #333;border-radius:8px;padding:14px 8px;text-align:center;cursor:pointer;color:#888;font-family:'DM Sans',sans-serif;}
+.hour-btn .h-num{font-size:20px;font-weight:700;color:#888;}
+.hour-btn .h-label{font-size:11px;color:#555;margin-top:2px;}
+.hour-btn.selected{border-color:#9377f4;background:#1a1050;}
+.hour-btn.selected .h-num{color:#9377f4;}
+.hour-btn.selected .h-label{color:#9377f4;}
+.timer-box{background:#111;border:0.5px solid #222;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;text-align:center;}
+.timer-day{color:#9377f4;font-size:12px;font-weight:600;margin-bottom:8px;}
+.timer-name{color:#fff;font-size:18px;font-weight:700;margin-bottom:1.5rem;}
+.timer-start-time{color:#555;font-size:12px;margin-bottom:6px;}
+.timer-end-label{color:#888;font-size:12px;margin-bottom:6px;}
+.timer-end-time{color:#fff;font-size:36px;font-weight:700;margin-bottom:4px;}
+.timer-end-date{color:#555;font-size:12px;margin-bottom:1.5rem;}
+.timer-elapsed{color:#9377f4;font-size:13px;}
+.card{background:#111;border:0.5px solid #222;border-radius:16px;padding:2rem;margin-bottom:1rem;}
+.card-logo-row{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;}
+.card-name-label{color:#666;font-size:12px;margin-bottom:4px;}
+.card-name{color:#fff;font-size:22px;font-weight:600;margin-bottom:1.5rem;}
+.card-badges{display:flex;gap:8px;margin-bottom:1.5rem;}
+.badge{background:#1a1a1a;border-radius:8px;padding:8px 14px;text-align:center;}
+.badge.accent{border:1px solid #9377f4;}
+.badge-label{color:#555;font-size:10px;margin-bottom:3px;}
+.badge-val{color:#fff;font-size:18px;font-weight:700;}
+.badge.accent .badge-val{color:#9377f4;}
+.card-times{background:#1a1a1a;border-radius:8px;padding:12px 16px;margin-bottom:1.5rem;}
+.card-time-row{display:flex;justify-content:space-between;align-items:center;}
+.card-time-row+.card-time-row{margin-top:8px;}
+.card-time-label{color:#666;font-size:12px;}
+.card-time-val{color:#fff;font-size:12px;}
+.card-time-val.accent{color:#9377f4;font-weight:500;}
+.card-footer{border-top:0.5px solid #222;padding-top:1rem;text-align:center;}
+.card-complete{color:#9377f4;font-size:16px;font-weight:600;margin-bottom:4px;}
+.card-challenge{color:#444;font-size:11px;}
+.back-btn{background:none;border:none;color:#555;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:1.5rem;padding:0;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- 홈 화면 -->
+<div class="screen active" id="screen-home">
+  <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
+  <div class="title">6일 장 대사 리셋</div>
+  <div class="subtitle">무너진 장 대사 리듬을 회복하는 6일의 여정</div>
+  <div class="desc">단식과 식단에 적응하는 대사 상태와 컨디션은 저마다 다르기 때문에, 본인의 몸 컨디션에 맞춰 아래 레벨 중 하나를 유연하게 선택해 진행해 주세요!</div>
+  <div class="section-label">단식 시간 가이드</div>
+  <div class="guide-table">
+    <div class="row">
+      <div class="cell head"></div>
+      <div class="cell head" style="text-align:center;"><div class="stage">1단계</div><div class="day">DAY 1</div></div>
+      <div class="cell head" style="text-align:center;"><div class="stage">2단계</div><div class="day">DAY 2~3</div></div>
+      <div class="cell head" style="text-align:center;"><div class="stage">3단계</div><div class="day">DAY 4~6</div></div>
+    </div>
+    <div class="row">
+      <div class="cell"><span class="lv">레벨3</span></div>
+      <div class="cell"><div class="h">24h</div></div>
+      <div class="cell"><div class="h">18h</div></div>
+      <div class="cell"><div class="h">16h</div></div>
+    </div>
+    <div class="row">
+      <div class="cell"><span class="lv">레벨2</span></div>
+      <div class="cell"><div class="h">18h</div></div>
+      <div class="cell"><div class="h">18h</div></div>
+      <div class="cell"><div class="h">16h</div></div>
+    </div>
+    <div class="row">
+      <div class="cell"><span class="lv">레벨1</span></div>
+      <div class="cell"><div class="h">16h</div></div>
+      <div class="cell"><div class="h">16h</div></div>
+      <div class="cell"><div class="h">16h</div></div>
+    </div>
+  </div>
+  <div class="note">* 견디기 힘들 땐 레벨을 조정해 주세요.</div>
+  <button class="btn" onclick="goToSetup()">시작하기</button>
+</div>
+
+<!-- 닉네임 입력 -->
+<div class="screen" id="screen-name">
+  <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
+  <div class="title" style="margin-bottom:0.5rem;">반가워요!</div>
+  <div class="desc">닉네임을 입력해 주세요.<br>한 번만 입력하면 기억할게요 :)</div>
+  <div class="input-wrap">
+    <div class="input-label">닉네임</div>
+    <input type="text" id="nickname-input" placeholder="예) 루틴이" maxlength="10">
+  </div>
+  <button class="btn" onclick="saveName()">다음</button>
+</div>
+
+<!-- DAY + 시간 선택 -->
+<div class="screen" id="screen-select">
+  <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
+  <div class="title" style="margin-bottom:1.5rem;">오늘의 미션 설정</div>
+  <div class="section-label">DAY 선택</div>
+  <div class="day-grid" id="day-grid"></div>
+  <div class="section-label">단식 시간 선택</div>
+  <div class="hour-grid">
+    <div class="hour-btn" id="h16" onclick="selectHour(16)">
+      <div class="h-num">16h</div>
+      <div class="h-label">레벨1 기준</div>
+    </div>
+    <div class="hour-btn" id="h18" onclick="selectHour(18)">
+      <div class="h-num">18h</div>
+      <div class="h-label">레벨2 기준</div>
+    </div>
+    <div class="hour-btn" id="h24" onclick="selectHour(24)">
+      <div class="h-num">24h</div>
+      <div class="h-label">레벨3 기준</div>
+    </div>
+  </div>
+  <button class="btn" onclick="startFasting()">단식 시작!</button>
+</div>
+
+<!-- 진행 중 -->
+<div class="screen" id="screen-timer">
+  <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
+  <div class="timer-box">
+    <div class="timer-day" id="t-day"></div>
+    <div class="timer-name" id="t-name"></div>
+    <div class="timer-start-time" id="t-start"></div>
+    <div class="timer-end-label">완료 예정 시각</div>
+    <div class="timer-end-time" id="t-end"></div>
+    <div class="timer-end-date" id="t-end-date"></div>
+    <div class="timer-elapsed" id="t-elapsed"></div>
+  </div>
+  <button class="btn" onclick="completeFasting()">미션 완료!</button>
+  <button class="btn btn-outline" onclick="goToSelect()">다시 설정하기</button>
+</div>
+
+<!-- 인증 카드 -->
+<div class="screen" id="screen-card">
+  <div class="card" id="cert-card">
+    <div class="card-logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
+    <div class="card-name-label">참여자</div>
+    <div class="card-name" id="c-name"></div>
+    <div class="card-badges">
+      <div class="badge accent">
+        <div class="badge-label">DAY</div>
+        <div class="badge-val" id="c-day"></div>
+      </div>
+      <div class="badge">
+        <div class="badge-label">목표</div>
+        <div class="badge-val" id="c-goal"></div>
+      </div>
+      <div class="badge" style="flex:1;">
+        <div class="badge-label">실제 단식</div>
+        <div class="badge-val" id="c-actual"></div>
+      </div>
+    </div>
+    <div class="card-times">
+      <div class="card-time-row">
+        <span class="card-time-label">시작</span>
+        <span class="card-time-val" id="c-start"></span>
+      </div>
+      <div class="card-time-row">
+        <span class="card-time-label">완료</span>
+        <span class="card-time-val accent" id="c-end"></span>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="card-complete" id="c-mission"></div>
+      <div class="card-challenge">6일 장 대사 리셋 챌린지</div>
+    </div>
+  </div>
+  <button class="btn" onclick="goToSelect()">다음 DAY 설정하기</button>
+  <button class="btn btn-outline" onclick="showHome()">처음으로</button>
+</div>
+
+</div>
+
+<script>
+let selectedDay = null;
+let selectedHour = null;
+let timerInterval = null;
+
+function goToSetup() {
+  const name = localStorage.getItem('grp_name');
+  if (!name) {
+    show('screen-name');
+  } else {
+    show('screen-select');
+    buildDayGrid();
+    restoreSession();
+  }
+}
+
+function saveName() {
+  const v = document.getElementById('nickname-input').value.trim();
+  if (!v) { alert('닉네임을 입력해 주세요!'); return; }
+  localStorage.setItem('grp_name', v);
+  show('screen-select');
+  buildDayGrid();
+  restoreSession();
+}
+
+function buildDayGrid() {
+  const grid = document.getElementById('day-grid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= 6; i++) {
+    const btn = document.createElement('div');
+    btn.className = 'day-btn' + (selectedDay === i ? ' selected' : '');
+    btn.innerHTML = '<div style="font-weight:600;color:inherit;">DAY</div><div style="font-size:16px;font-weight:700;color:inherit;">' + i + '</div>';
+    btn.onclick = () => selectDay(i);
+    grid.appendChild(btn);
+  }
+}
+
+function selectDay(d) {
+  selectedDay = d;
+  buildDayGrid();
+}
+
+function selectHour(h) {
+  selectedHour = h;
+  document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('h' + h).classList.add('selected');
+}
+
+function restoreSession() {
+  const saved = localStorage.getItem('grp_session');
+  if (saved) {
+    const s = JSON.parse(saved);
+    selectedDay = s.day;
+    selectedHour = s.hour;
+    buildDayGrid();
+    selectHour(s.hour);
+    show('screen-timer');
+    startTimerDisplay(s.startTime, s.hour, s.day);
+  }
+}
+
+function startFasting() {
+  if (!selectedDay) { alert('DAY를 선택해 주세요!'); return; }
+  if (!selectedHour) { alert('단식 시간을 선택해 주세요!'); return; }
+  const now = new Date().getTime();
+  const session = { day: selectedDay, hour: selectedHour, startTime: now };
+  localStorage.setItem('grp_session', JSON.stringify(session));
+  show('screen-timer');
+  startTimerDisplay(now, selectedHour, selectedDay);
+}
+
+function startTimerDisplay(startTime, hour, day) {
+  const name = localStorage.getItem('grp_name');
+  document.getElementById('t-day').textContent = 'DAY ' + day;
+  document.getElementById('t-name').textContent = name;
+  const endTime = startTime + hour * 3600000;
+
+  function update() {
+    const now = new Date().getTime();
+    const elapsed = now - startTime;
+    const eh = Math.floor(elapsed / 3600000);
+    const em = Math.floor((elapsed % 3600000) / 60000);
+    document.getElementById('t-start').textContent = '시작: ' + formatTime(new Date(startTime));
+    document.getElementById('t-elapsed').textContent = '현재 ' + eh + '시간 ' + em + '분 진행 중';
+
+    const endDate = new Date(endTime);
+    document.getElementById('t-end').textContent = formatTime(endDate);
+    const today = new Date();
+    if (endDate.toDateString() !== today.toDateString()) {
+      document.getElementById('t-end-date').textContent = formatDate(endDate) + ' 완료 예정';
+    } else {
+      document.getElementById('t-end-date').textContent = '오늘 완료 예정';
+    }
+  }
+  update();
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(update, 30000);
+}
+
+function completeFasting() {
+  const saved = localStorage.getItem('grp_session');
+  if (!saved) return;
+  const s = JSON.parse(saved);
+  const now = new Date().getTime();
+  const elapsed = now - s.startTime;
+  const eh = Math.floor(elapsed / 3600000);
+  const em = Math.floor((elapsed % 3600000) / 60000);
+  const name = localStorage.getItem('grp_name');
+
+  document.getElementById('c-name').textContent = name;
+  document.getElementById('c-day').textContent = s.day;
+  document.getElementById('c-goal').textContent = s.hour + 'h';
+  document.getElementById('c-actual').textContent = eh + 'h ' + em + 'm';
+  document.getElementById('c-start').textContent = formatTime(new Date(s.startTime));
+  document.getElementById('c-end').textContent = formatTime(new Date(now));
+  document.getElementById('c-mission').textContent = s.day + '일차 미션 완료!';
+
+  localStorage.removeItem('grp_session');
+  if (timerInterval) clearInterval(timerInterval);
+  show('screen-card');
+}
+
+function goToSelect() {
+  selectedDay = null;
+  selectedHour = null;
+  localStorage.removeItem('grp_session');
+  if (timerInterval) clearInterval(timerInterval);
+  show('screen-select');
+  buildDayGrid();
+  document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
+}
+
+function showHome() {
+  selectedDay = null;
+  selectedHour = null;
+  localStorage.removeItem('grp_session');
+  if (timerInterval) clearInterval(timerInterval);
+  show('screen-home');
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function formatTime(d) {
+  const h = d.getHours();
+  const m = String(d.getMinutes()).padStart(2, '0');
+  const ampm = h < 12 ? '오전' : '오후';
+  const hh = h % 12 || 12;
+  return ampm + ' ' + hh + ':' + m;
+}
+
+function formatDate(d) {
+  return (d.getMonth()+1) + '월 ' + d.getDate() + '일';
+}
+</script>
+</body>
+</html>
