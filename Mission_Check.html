@@ -131,6 +131,15 @@ input[type=text]:focus{border-color:#9377f4;}
   <button class="btn" onclick="saveName()">다음</button>
 </div>
 
+<!-- 증상소거 체크 안내 -->
+<div class="screen" id="screen-symptom">
+  <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
+  <div class="title" style="margin-bottom:0.5rem;">시작 전 증상 체크!</div>
+  <div class="desc">챌린지 전 현재 증상을 먼저 체크해 주세요.<br>6일 후 얼마나 달라졌는지 비교할 수 있어요 :)</div>
+  <button class="btn" onclick="window.open('https://phenomenal-twilight-06058d.netlify.app/','_blank');localStorage.setItem('grp_symptom_checked','true');">증상 체크하러 가기 →</button>
+  <button class="btn btn-outline" style="margin-top:10px;" onclick="goToSelectFromSymptom()">체크 완료, 단식 시작하기</button>
+</div>
+
 <!-- DAY + 시간 선택 -->
 <div class="screen" id="screen-select">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
@@ -231,6 +240,12 @@ window.onload = function() {
   }
 };
 
+function goToSelectFromSymptom() {
+  show('screen-select');
+  buildDayGrid();
+  restoreSession();
+}
+
 function goToSetup() {
   const name = localStorage.getItem('grp_name');
   if (!name) {
@@ -246,9 +261,7 @@ function saveName() {
   const v = document.getElementById('nickname-input').value.trim();
   if (!v) { alert('닉네임을 입력해 주세요!'); return; }
   localStorage.setItem('grp_name', v);
-  show('screen-select');
-  buildDayGrid();
-  restoreSession();
+  show('screen-symptom');
 }
 
 function buildDayGrid() {
