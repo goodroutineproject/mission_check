@@ -47,13 +47,16 @@ input[type=text]:focus{border-color:#9377f4;}
 .hour-btn.selected .h-num{color:#9377f4;}
 .hour-btn.selected .h-label{color:#9377f4;}
 .timer-box{background:#111;border:0.5px solid #222;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;text-align:center;}
-.timer-day{color:#9377f4;font-size:12px;font-weight:600;margin-bottom:8px;}
-.timer-name{color:#fff;font-size:18px;font-weight:700;margin-bottom:1.5rem;}
-.timer-start-time{color:#555;font-size:12px;margin-bottom:6px;}
-.timer-end-label{color:#888;font-size:12px;margin-bottom:6px;}
-.timer-end-time{color:#fff;font-size:36px;font-weight:700;margin-bottom:4px;}
-.timer-end-date{color:#555;font-size:12px;margin-bottom:1.5rem;}
-.timer-elapsed{color:#9377f4;font-size:13px;}
+.timer-challenge{color:#888;font-size:12px;margin-bottom:4px;}
+.timer-day{color:#fff;font-size:28px;font-weight:700;margin-bottom:4px;}
+.timer-name{color:#9377f4;font-size:14px;font-weight:500;margin-bottom:1.5rem;}
+.timer-elapsed-label{color:#888;font-size:36px;font-weight:700;margin-bottom:6px;}
+.timer-elapsed{color:#fff;font-size:36px;font-weight:700;margin-bottom:4px;}
+.timer-elapsed-unit{color:#9377f4;font-size:36px;font-weight:700;margin-bottom:1.5rem;}
+.timer-start-time{color:#555;font-size:13px;margin-bottom:4px;}
+.timer-end-label{color:#555;font-size:13px;margin-bottom:4px;}
+.timer-end-time{color:#555;font-size:13px;font-weight:500;margin-bottom:4px;}
+.timer-end-date{color:#555;font-size:11px;}
 .card{background:#111;border:0.5px solid #222;border-radius:16px;padding:2rem;margin-bottom:1rem;}
 .card-logo-row{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;}
 .card-name-label{color:#666;font-size:12px;margin-bottom:4px;}
@@ -89,9 +92,9 @@ input[type=text]:focus{border-color:#9377f4;}
   <div class="guide-table">
     <div class="row">
       <div class="cell head"></div>
-      <div class="cell head" style="text-align:center;"><div class="stage">1단계</div><div class="day">DAY 1</div></div>
-      <div class="cell head" style="text-align:center;"><div class="stage">2단계</div><div class="day">DAY 2~3</div></div>
-      <div class="cell head" style="text-align:center;"><div class="stage">3단계</div><div class="day">DAY 4~6</div></div>
+      <div class="cell head" style="text-align:center;"><div class="day" style="color:#9377f4;font-size:11px;font-weight:600;">DAY 1</div></div>
+      <div class="cell head" style="text-align:center;"><div class="day" style="color:#9377f4;font-size:11px;font-weight:600;">DAY 2~3</div></div>
+      <div class="cell head" style="text-align:center;"><div class="day" style="color:#9377f4;font-size:11px;font-weight:600;">DAY 4~6</div></div>
     </div>
     <div class="row">
       <div class="cell"><span class="lv">레벨3</span></div>
@@ -156,13 +159,15 @@ input[type=text]:focus{border-color:#9377f4;}
 <div class="screen" id="screen-timer">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
   <div class="timer-box">
+    <div class="timer-challenge">6일 장 대사 리셋 챌린지</div>
     <div class="timer-day" id="t-day"></div>
     <div class="timer-name" id="t-name"></div>
+    <div class="timer-elapsed-label">단식 진행 시간</div>
+    <div class="timer-elapsed" id="t-elapsed"></div>
+    <div class="timer-elapsed-unit" id="t-elapsed-unit"></div>
     <div class="timer-start-time" id="t-start"></div>
-    <div class="timer-end-label">완료 예정 시각</div>
     <div class="timer-end-time" id="t-end"></div>
     <div class="timer-end-date" id="t-end-date"></div>
-    <div class="timer-elapsed" id="t-elapsed"></div>
   </div>
   <button class="btn" onclick="completeFasting()">미션 완료!</button>
   <button class="btn btn-outline" onclick="goToSelect()">다시 설정하기</button>
@@ -303,17 +308,13 @@ function startTimerDisplay(startTime, hour, day) {
     const elapsed = now - startTime;
     const eh = Math.floor(elapsed / 3600000);
     const em = Math.floor((elapsed % 3600000) / 60000);
-    document.getElementById('t-start').textContent = '시작: ' + formatTime(new Date(startTime));
-    document.getElementById('t-elapsed').textContent = '현재 ' + eh + '시간 ' + em + '분 진행 중';
+    document.getElementById('t-start').textContent = '단식 시작: ' + formatDateTime(new Date(startTime));
+    document.getElementById('t-elapsed').textContent = eh + '시간 ' + em + '분';
+    document.getElementById('t-elapsed-unit').textContent = '단식 중';
 
     const endDate = new Date(endTime);
-    document.getElementById('t-end').textContent = formatTime(endDate);
-    const today = new Date();
-    if (endDate.toDateString() !== today.toDateString()) {
-      document.getElementById('t-end-date').textContent = formatDate(endDate) + ' 완료 예정';
-    } else {
-      document.getElementById('t-end-date').textContent = '오늘 완료 예정';
-    }
+    document.getElementById('t-end').textContent = '완료 예정: ' + formatDateTime(endDate);
+    document.getElementById('t-end-date').textContent = '';
   }
   update();
   if (timerInterval) clearInterval(timerInterval);
@@ -364,6 +365,16 @@ function showHome() {
 function show(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+}
+
+function formatDateTime(d) {
+  const month = d.getMonth() + 1;
+  const date = d.getDate();
+  const h = d.getHours();
+  const m = String(d.getMinutes()).padStart(2, '0');
+  const ampm = h < 12 ? '오전' : '오후';
+  const hh = h % 12 || 12;
+  return month + '월 ' + date + '일 ' + ampm + ' ' + hh + ':' + m;
 }
 
 function formatTime(d) {
