@@ -161,7 +161,16 @@ input[type=text]:focus{border-color:#9377f4;}
       <div class="h-label">레벨3 기준</div>
     </div>
   </div>
-  <button class="btn" onclick="startFasting()">단식 시작!</button>
+  <button class="btn" onclick="startFasting()">지금 시각으로 단식 시작!</button>
+  <div style="margin-top:16px;text-align:center;">
+    <div style="color:#555;font-size:12px;margin-bottom:8px;">이미 시작했다면 시간 직접 입력</div>
+    <div style="display:flex;gap:8px;align-items:center;justify-content:center;margin-bottom:10px;">
+      <input type="number" id="manual-hour" min="0" max="23" placeholder="시" style="width:70px;background:#1a1a1a;border:0.5px solid #333;border-radius:8px;padding:10px;color:#fff;font-size:15px;text-align:center;font-family:'DM Sans',sans-serif;outline:none;">
+      <span style="color:#555;">:</span>
+      <input type="number" id="manual-min" min="0" max="59" placeholder="분" style="width:70px;background:#1a1a1a;border:0.5px solid #333;border-radius:8px;padding:10px;color:#fff;font-size:15px;text-align:center;font-family:'DM Sans',sans-serif;outline:none;">
+    </div>
+    <button class="btn btn-outline" onclick="startFastingManual()">이 시간으로 시작</button>
+  </div>
 </div>
 
 <!-- 진행 중 -->
@@ -298,6 +307,22 @@ function restoreSession() {
     show('screen-timer');
     startTimerDisplay(s.startTime, s.hour, s.day);
   }
+}
+
+function startFastingManual() {
+  if (!selectedDay) { alert('DAY를 선택해 주세요!'); return; }
+  if (!selectedHour) { alert('단식 시간을 선택해 주세요!'); return; }
+  const h = parseInt(document.getElementById('manual-hour').value);
+  const m = parseInt(document.getElementById('manual-min').value);
+  if (isNaN(h) || isNaN(m)) { alert('시작 시간을 입력해 주세요!'); return; }
+  if (h < 0 || h > 23 || m < 0 || m > 59) { alert('올바른 시간을 입력해 주세요!'); return; }
+  const now = new Date();
+  const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0).getTime();
+  if (startTime > now.getTime()) { alert('과거 시간만 입력 가능해요!'); return; }
+  const session = { day: selectedDay, hour: selectedHour, startTime: startTime };
+  localStorage.setItem('grp_session', JSON.stringify(session));
+  show('screen-timer');
+  startTimerDisplay(startTime, selectedHour, selectedDay);
 }
 
 function startFasting() {
