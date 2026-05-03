@@ -214,6 +214,18 @@ let selectedDay = null;
 let selectedHour = null;
 let timerInterval = null;
 
+// 링크 열자마자 세션 복구
+window.onload = function() {
+  const saved = localStorage.getItem('grp_session');
+  if (saved) {
+    const s = JSON.parse(saved);
+    selectedDay = s.day;
+    selectedHour = s.hour;
+    show('screen-timer');
+    startTimerDisplay(s.startTime, s.hour, s.day);
+  }
+};
+
 function goToSetup() {
   const name = localStorage.getItem('grp_name');
   if (!name) {
