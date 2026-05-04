@@ -195,14 +195,28 @@ input[type=text]:focus{border-color:#9377f4;}
 <!-- 식사 시간 모드 -->
 <div class="screen" id="screen-eating">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
-  <div class="timer-box" style="text-align:center;padding:2.5rem 1.5rem;">
-    <div style="color:#9377f4;font-size:13px;font-weight:600;margin-bottom:12px;">6일 장 대사 리셋 챌린지</div>
-    <div style="font-size:24px;font-weight:700;color:#fff;margin-bottom:8px;">🍽️ 식사 가능 시간</div>
-    <div style="color:#9377f4;font-size:36px;font-weight:700;margin-bottom:4px;" id="eating-elapsed"></div>
-    <div style="color:#888;font-size:13px;margin-bottom:16px;" id="eating-next"></div>
-    <div style="color:#555;font-size:12px;" id="eating-overdue" style="display:none;"></div>
+  <div class="timer-box" style="text-align:center;padding:2rem 1.5rem;">
+    <div style="color:#9377f4;font-size:12px;font-weight:600;margin-bottom:6px;">6일 장 대사 리셋 챌린지</div>
+    <div style="color:#fff;font-size:36px;font-weight:700;margin-bottom:2px;" id="eating-day"></div>
+    <div style="color:#9377f4;font-size:13px;margin-bottom:1.5rem;" id="eating-name"></div>
+    <div style="color:#888;font-size:12px;margin-bottom:8px;">식사 가능 시간</div>
+    <div style="margin-bottom:4px;">
+      <span style="color:#4ade80;font-size:40px;font-weight:700;" id="eating-h"></span>
+      <span style="color:#fff;font-size:18px;font-weight:500;">시간 </span>
+      <span style="color:#4ade80;font-size:40px;font-weight:700;" id="eating-m"></span>
+      <span style="color:#fff;font-size:18px;font-weight:500;">분</span>
+    </div>
+    <div style="color:#4ade80;font-size:14px;font-weight:600;margin-bottom:6px;" id="eating-status"></div>
+    <div style="color:#555;font-size:11px;margin-bottom:1rem;" id="eating-calc"></div>
+    <div style="background:#1a1a1a;border-radius:6px;height:4px;margin-bottom:1.5rem;overflow:hidden;">
+      <div id="eating-progress" style="background:#4ade80;height:100%;border-radius:6px;transition:width 0.5s;"></div>
+    </div>
+    <div style="background:#1a1050;border:0.5px solid #9377f4;border-radius:10px;padding:12px;">
+      <div style="color:#888;font-size:11px;margin-bottom:4px;">다음 단식 시작 예정</div>
+      <div style="color:#fff;font-size:15px;font-weight:600;" id="eating-next"></div>
+    </div>
   </div>
-  <button class="btn" onclick="goToSelect()">다음 단식 시작하기</button>
+  <button class="btn" onclick="goToSelect()">단식 시작하기</button>
   <button class="btn btn-outline" style="margin-top:10px;" onclick="show('screen-history');loadHistory();">내 기록 보기</button>
 </div>
 
@@ -490,6 +504,7 @@ function completeFasting() {
 
   localStorage.setItem('grp_fast_end', now.toString());
   localStorage.setItem('grp_last_hour', s.hour.toString());
+  localStorage.setItem('grp_last_day', s.day.toString());
   localStorage.removeItem('grp_session');
   if (timerInterval) clearInterval(timerInterval);
   show('screen-card');
@@ -504,41 +519,61 @@ function goToEating() {
 
 function startEatingDisplay() {
   const endTime = parseInt(localStorage.getItem('grp_fast_end') || '0');
+  const fastHour = parseInt(localStorage.getItem('grp_last_hour') || '16');
+  const lastDay = localStorage.getItem('grp_last_day') || '';
+  const name = localStorage.getItem('grp_name') || '';
   if (!endTime) return;
 
-  // 단식 시간 기준으로 다음 단식 시작 시간 계산 (24시간 사이클)
-  const fastHour = parseInt(localStorage.getItem('grp_last_hour') || '16');
-  const nextFastTime = endTime + (24 - fastHour) * 3600000;
+  const eatHours = 24 - fastHour;
+  const nextFastTime = endTime + eatHours * 3600000;
+
+  document.getElementById('eating-day').textContent = lastDay ? 'DAY ' + lastDay : '';
+  document.getElementById('eating-name').textContent = name;
+  document.getElementById('eating-calc').textContent = '24h - ' + fastHour + 'h 단식 = ' + eatHours + 'h 식사 가능';
 
   function update() {
     const now = new Date().getTime();
-    const eatingElapsed = now - endTime;
-    const eh = Math.floor(eatingElapsed / 3600000);
-    const em = Math.floor((eatingElapsed % 3600000) / 60000);
-
     const timeToNext = nextFastTime - now;
 
     if (timeToNext > 0) {
-      // 다음 단식 전
-      const nh = Math.floor(timeToNext / 3600000);
-      const nm = Math.floor((timeToNext % 3600000) / 60000);
-      document.getElementById('eating-elapsed').textContent = eh + '시간 ' + em + '분 식사 중';
-      document.getElementById('eating-next').textContent = '다음 단식이 ' + nh + '시간 ' + nm + '분 후에 시작됩니다';
-      document.getElementById('eating-overdue').style.display = 'none';
+      const rh = Math.floor(timeToNext / 3600000);
+      const rm = Math.floor((timeToNext % 3600000) / 60000);
+      const progress = ((eatHours * 3600000 - timeToNext) / (eatHours * 3600000)) * 100;
+
+      document.getElementById('eating-h').textContent = rh;
+      document.getElementById('eating-m').textContent = rm;
+      document.getElementById('eating-status').textContent = '남았습니다';
+      document.getElementById('eating-progress').style.width = Math.min(progress, 100) + '%';
+      document.getElementById('eating-next').textContent = formatNextFastTime(new Date(nextFastTime));
     } else {
-      // 단식 시작 시간 지남
       const overH = Math.floor(Math.abs(timeToNext) / 3600000);
       const overM = Math.floor((Math.abs(timeToNext) % 3600000) / 60000);
-      document.getElementById('eating-elapsed').textContent = '';
-      document.getElementById('eating-next').textContent = '';
-      document.getElementById('eating-overdue').style.display = 'block';
-      document.getElementById('eating-overdue').textContent = '단식 시작 예정 시간이 ' + overH + '시간 ' + overM + '분 지났어요';
+      document.getElementById('eating-h').textContent = overH;
+      document.getElementById('eating-m').textContent = overM;
+      document.getElementById('eating-status').textContent = '단식 시작 예정 시간이 지났어요';
+      document.getElementById('eating-status').style.color = '#f87171';
+      document.getElementById('eating-h').style.color = '#f87171';
+      document.getElementById('eating-m').style.color = '#f87171';
+      document.getElementById('eating-progress').style.width = '100%';
+      document.getElementById('eating-progress').style.background = '#f87171';
+      document.getElementById('eating-next').textContent = '지금 바로 단식을 시작해 주세요!';
     }
   }
-
   update();
   if (eatingInterval) clearInterval(eatingInterval);
   eatingInterval = setInterval(update, 30000);
+}
+
+function formatNextFastTime(d) {
+  const days = ['일', '월', '화', '수', '목', '금', '토'];
+  const month = d.getMonth() + 1;
+  const date = d.getDate();
+  const day = days[d.getDay()];
+  const h = d.getHours();
+  const m = String(d.getMinutes()).padStart(2, '0');
+  const ampm = h < 12 ? '오전' : '오후';
+  const hh = h % 12 || 12;
+  return month + '월 ' + date + '일 (' + day + ') ' + ampm + ' ' + hh + ':' + m;
 }
 
 function loadHistory() {
