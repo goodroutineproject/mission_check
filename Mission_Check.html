@@ -187,7 +187,7 @@ input[type=text]:focus{border-color:#9377f4;}
     <div class="timer-end-time" id="t-end"></div>
     <div class="timer-end-date" id="t-end-date"></div>
   </div>
-  <button class="btn" onclick="completeFasting()">미션 완료!</button>
+  <button class="btn" onclick="completeFasting()">단식 시간 종료하기</button>
   <button class="btn btn-outline" style="margin-top:10px;" onclick="show('screen-history');loadHistory();">내 기록 보기</button>
   <button class="btn btn-outline" style="margin-top:10px;" onclick="goToSelect()">다시 설정하기</button>
 </div>
@@ -197,8 +197,10 @@ input[type=text]:focus{border-color:#9377f4;}
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
   <div class="timer-box" style="text-align:center;padding:2.5rem 1.5rem;">
     <div style="color:#9377f4;font-size:13px;font-weight:600;margin-bottom:12px;">6일 장 대사 리셋 챌린지</div>
-    <div style="font-size:28px;font-weight:700;color:#fff;margin-bottom:8px;">🍽️ 식사 가능 시간입니다.</div>
-    <div style="color:#888;font-size:13px;margin-top:16px;">충분히 드시고 다음 단식을 시작해 주세요 :)</div>
+    <div style="font-size:24px;font-weight:700;color:#fff;margin-bottom:8px;">🍽️ 식사 가능 시간</div>
+    <div style="color:#9377f4;font-size:36px;font-weight:700;margin-bottom:4px;" id="eating-elapsed"></div>
+    <div style="color:#888;font-size:13px;margin-bottom:16px;" id="eating-next"></div>
+    <div style="color:#555;font-size:12px;" id="eating-overdue" style="display:none;"></div>
   </div>
   <button class="btn" onclick="goToSelect()">다음 단식 시작하기</button>
   <button class="btn btn-outline" style="margin-top:10px;" onclick="show('screen-history');loadHistory();">내 기록 보기</button>
@@ -271,6 +273,7 @@ window.onload = function() {
     startTimerDisplay(s.startTime, s.hour, s.day);
   } else if (name) {
     show('screen-eating');
+    startEatingDisplay();
   }
 };
 
@@ -485,13 +488,57 @@ function completeFasting() {
     })
   }).catch(function() {});
 
+  localStorage.setItem('grp_fast_end', now.toString());
+  localStorage.setItem('grp_last_hour', s.hour.toString());
   localStorage.removeItem('grp_session');
   if (timerInterval) clearInterval(timerInterval);
   show('screen-card');
 }
 
+let eatingInterval = null;
+
 function goToEating() {
   show('screen-eating');
+  startEatingDisplay();
+}
+
+function startEatingDisplay() {
+  const endTime = parseInt(localStorage.getItem('grp_fast_end') || '0');
+  if (!endTime) return;
+
+  // 단식 시간 기준으로 다음 단식 시작 시간 계산 (24시간 사이클)
+  const fastHour = parseInt(localStorage.getItem('grp_last_hour') || '16');
+  const nextFastTime = endTime + (24 - fastHour) * 3600000;
+
+  function update() {
+    const now = new Date().getTime();
+    const eatingElapsed = now - endTime;
+    const eh = Math.floor(eatingElapsed / 3600000);
+    const em = Math.floor((eatingElapsed % 3600000) / 60000);
+
+    const timeToNext = nextFastTime - now;
+
+    if (timeToNext > 0) {
+      // 다음 단식 전
+      const nh = Math.floor(timeToNext / 3600000);
+      const nm = Math.floor((timeToNext % 3600000) / 60000);
+      document.getElementById('eating-elapsed').textContent = eh + '시간 ' + em + '분 식사 중';
+      document.getElementById('eating-next').textContent = '다음 단식이 ' + nh + '시간 ' + nm + '분 후에 시작됩니다';
+      document.getElementById('eating-overdue').style.display = 'none';
+    } else {
+      // 단식 시작 시간 지남
+      const overH = Math.floor(Math.abs(timeToNext) / 3600000);
+      const overM = Math.floor((Math.abs(timeToNext) % 3600000) / 60000);
+      document.getElementById('eating-elapsed').textContent = '';
+      document.getElementById('eating-next').textContent = '';
+      document.getElementById('eating-overdue').style.display = 'block';
+      document.getElementById('eating-overdue').textContent = '단식 시작 예정 시간이 ' + overH + '시간 ' + overM + '분 지났어요';
+    }
+  }
+
+  update();
+  if (eatingInterval) clearInterval(eatingInterval);
+  eatingInterval = setInterval(update, 30000);
 }
 
 function loadHistory() {
