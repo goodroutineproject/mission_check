@@ -144,6 +144,7 @@ input[type=text]:focus{border-color:#9377f4;}
 <div class="screen" id="screen-select">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
   <div class="title" style="margin-bottom:1.5rem;">오늘의 미션 설정</div>
+  <div id="done-list" style="margin-bottom:1rem;"></div>
   <div class="section-label">DAY 선택</div>
   <div class="day-grid" id="day-grid"></div>
   <div class="section-label">단식 시간 선택</div>
@@ -187,7 +188,28 @@ input[type=text]:focus{border-color:#9377f4;}
     <div class="timer-end-date" id="t-end-date"></div>
   </div>
   <button class="btn" onclick="completeFasting()">미션 완료!</button>
-  <button class="btn btn-outline" onclick="goToSelect()">다시 설정하기</button>
+  <button class="btn btn-outline" style="margin-top:10px;" onclick="show('screen-history');loadHistory();">내 기록 보기</button>
+  <button class="btn btn-outline" style="margin-top:10px;" onclick="goToSelect()">다시 설정하기</button>
+</div>
+
+<!-- 식사 시간 모드 -->
+<div class="screen" id="screen-eating">
+  <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
+  <div class="timer-box" style="text-align:center;padding:2.5rem 1.5rem;">
+    <div style="color:#9377f4;font-size:13px;font-weight:600;margin-bottom:12px;">6일 장 대사 리셋 챌린지</div>
+    <div style="font-size:28px;font-weight:700;color:#fff;margin-bottom:8px;">🍽️ 식사 가능 시간입니다.</div>
+    <div style="color:#888;font-size:13px;margin-top:16px;">충분히 드시고 다음 단식을 시작해 주세요 :)</div>
+  </div>
+  <button class="btn" onclick="goToSelect()">다음 단식 시작하기</button>
+  <button class="btn btn-outline" style="margin-top:10px;" onclick="show('screen-history');loadHistory();">내 기록 보기</button>
+</div>
+
+<!-- 기록 보기 -->
+<div class="screen" id="screen-history">
+  <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
+  <div class="title" style="margin-bottom:1.5rem;">내 미션 기록</div>
+  <div id="history-list" style="margin-bottom:1.5rem;"></div>
+  <button class="btn btn-outline" onclick="history.go(-1) || show('screen-timer');">돌아가기</button>
 </div>
 
 <!-- 인증 카드 -->
@@ -225,7 +247,7 @@ input[type=text]:focus{border-color:#9377f4;}
       <div class="card-challenge">6일 장 대사 리셋 챌린지</div>
     </div>
   </div>
-  <button class="btn" onclick="goToSelect()">다음 DAY 설정하기</button>
+  <button class="btn" onclick="goToEating()">식사 가능 시간 확인하기</button>
   <button class="btn" style="background:#1a1a1a;border:0.5px solid #9377f4;color:#9377f4;margin-top:10px;" onclick="window.open('https://phenomenal-twilight-06058d.netlify.app/','_blank')">오늘 증상 체크하기 →</button>
   <button class="btn btn-outline" onclick="showHome()">처음으로</button>
 </div>
@@ -240,18 +262,21 @@ let timerInterval = null;
 // 링크 열자마자 세션 복구
 window.onload = function() {
   const saved = localStorage.getItem('grp_session');
+  const name = localStorage.getItem('grp_name');
   if (saved) {
     const s = JSON.parse(saved);
     selectedDay = s.day;
     selectedHour = s.hour;
     show('screen-timer');
     startTimerDisplay(s.startTime, s.hour, s.day);
+  } else if (name) {
+    show('screen-eating');
   }
 };
 
 function goToSelectFromSymptom() {
   show('screen-select');
-  buildDayGrid();
+  loadCompletedDays();
   restoreSession();
 }
 
@@ -261,9 +286,18 @@ function goToSetup() {
     show('screen-name');
   } else {
     show('screen-select');
-    buildDayGrid();
+    loadCompletedDays();
     restoreSession();
   }
+}
+
+function loadCompletedDays() {
+  const name = localStorage.getItem('grp_name');
+  if (!name) { buildDayGrid([]); return; }
+  fetch('https://script.google.com/macros/s/AKfycbw3KwnLFc_r_494ExmLrtU7M58rEx1qqRhIlSFGQBRgoVD-DKnqhklwRgYQAuQB6ZwO8A/exec?name=' + encodeURIComponent(name))
+    .then(r => r.json())
+    .then(data => buildDayGrid(data))
+    .catch(() => buildDayGrid([]));
 }
 
 function saveName() {
@@ -273,15 +307,77 @@ function saveName() {
   show('screen-symptom');
 }
 
-function buildDayGrid() {
+function buildDayGrid(completedDays) {
   const grid = document.getElementById('day-grid');
+  const completed = completedDays || [];
+  const round = parseInt(localStorage.getItem('grp_round') || '1');
   grid.innerHTML = '';
+
+  const doneList = document.getElementById('done-list');
+  if (doneList) {
+    // 현재 회차 표시
+    let header = `<div style="color:#555;font-size:12px;margin-bottom:8px;">${round}회차 진행 중</div>`;
+
+    // 6일 모두 완료시 다음 회차 안내
+    const doneDays = completed.map(d => parseInt(d.day));
+    const allDone = [1,2,3,4,5,6].every(d => doneDays.includes(d));
+
+    if (allDone) {
+      header += `
+        <div style="background:#1a1050;border:0.5px solid #9377f4;border-radius:10px;padding:14px;margin-bottom:12px;text-align:center;">
+          <div style="color:#9377f4;font-size:14px;font-weight:700;margin-bottom:6px;">🎉 ${round}회차 완주!</div>
+          <div style="color:#888;font-size:12px;margin-bottom:12px;">${round+1}회차를 시작할 수 있어요</div>
+          <button class="btn" style="padding:10px;" onclick="startNextRound()">✨ ${round+1}회차 시작하기</button>
+        </div>`;
+    }
+
+    if (completed.length > 0) {
+      doneList.innerHTML = header + completed.map(d => `
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#111;border:0.5px solid #222;border-radius:8px;padding:10px 14px;margin-bottom:8px;">
+          <span style="color:#9377f4;font-size:13px;font-weight:600;">✅ DAY ${d.day}</span>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="color:#888;font-size:12px;">${d.actual} 단식 완료</span>
+            <span style="color:#9377f4;font-size:12px;cursor:pointer;border:0.5px solid #9377f4;border-radius:6px;padding:2px 8px;" onclick='showDayDetail(${JSON.stringify(d)})'>보기</span>
+          </div>
+        </div>
+      `).join('') + `
+        <div style="margin-top:16px;text-align:center;">
+          <span style="color:#333;font-size:11px;cursor:pointer;text-decoration:underline;" onclick="resetAll()">완전히 리셋하기 (이전 데이터는 모두 사라집니다)</span>
+        </div>`;
+    } else {
+      doneList.innerHTML = header;
+    }
+  }
+
+  const doneDays2 = completed.map(d => parseInt(d.day));
+  const allDone2 = [1,2,3,4,5,6].every(d => doneDays2.includes(d));
+
   for (let i = 1; i <= 6; i++) {
     const btn = document.createElement('div');
-    btn.className = 'day-btn' + (selectedDay === i ? ' selected' : '');
+    const isDone = doneDays2.includes(i);
+    const isSelected = selectedDay === i;
+    btn.className = 'day-btn' + (isSelected ? ' selected' : '');
+    if (isDone || allDone2) btn.style.cssText = 'opacity:0.3;cursor:not-allowed;';
     btn.innerHTML = '<div style="font-weight:600;color:inherit;">DAY</div><div style="font-size:16px;font-weight:700;color:inherit;">' + i + '</div>';
-    btn.onclick = () => selectDay(i);
+    if (!isDone && !allDone2) btn.onclick = () => selectDay(i);
     grid.appendChild(btn);
+  }
+}
+
+function startNextRound() {
+  const round = parseInt(localStorage.getItem('grp_round') || '1');
+  localStorage.setItem('grp_round', round + 1);
+  localStorage.removeItem('grp_session');
+  loadCompletedDays();
+}
+
+function resetAll() {
+  if (confirm('정말 초기화할까요?\n이전 기록이 모두 사라집니다.')) {
+    localStorage.removeItem('grp_session');
+    localStorage.removeItem('grp_round');
+    localStorage.removeItem('grp_name');
+    localStorage.removeItem('grp_symptom_checked');
+    show('screen-home');
   }
 }
 
@@ -302,7 +398,7 @@ function restoreSession() {
     const s = JSON.parse(saved);
     selectedDay = s.day;
     selectedHour = s.hour;
-    buildDayGrid();
+    loadCompletedDays();
     selectHour(s.hour);
     show('screen-timer');
     startTimerDisplay(s.startTime, s.hour, s.day);
@@ -394,13 +490,55 @@ function completeFasting() {
   show('screen-card');
 }
 
+function goToEating() {
+  show('screen-eating');
+}
+
+function loadHistory() {
+  const name = localStorage.getItem('grp_name');
+  const list = document.getElementById('history-list');
+  list.innerHTML = '<div style="color:#555;font-size:13px;text-align:center;">불러오는 중...</div>';
+  fetch('https://script.google.com/macros/s/AKfycbw3KwnLFc_r_494ExmLrtU7M58rEx1qqRhIlSFGQBRgoVD-DKnqhklwRgYQAuQB6ZwO8A/exec?name=' + encodeURIComponent(name))
+    .then(r => r.json())
+    .then(data => {
+      if (!data.length) {
+        list.innerHTML = '<div style="color:#555;font-size:13px;text-align:center;">아직 기록이 없어요!</div>';
+        return;
+      }
+      list.innerHTML = data.map(d => `
+        <div style="background:#111;border:0.5px solid #222;border-radius:12px;padding:1rem;margin-bottom:10px;">
+          <div style="color:#9377f4;font-size:12px;font-weight:600;margin-bottom:6px;">DAY ${d.day}</div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="color:#555;font-size:12px;">목표</span>
+            <span style="color:#fff;font-size:12px;">${d.goal}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="color:#555;font-size:12px;">실제 단식</span>
+            <span style="color:#9377f4;font-size:12px;font-weight:600;">${d.actual}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="color:#555;font-size:12px;">시작</span>
+            <span style="color:#888;font-size:12px;">${d.startTime}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span style="color:#555;font-size:12px;">완료</span>
+            <span style="color:#888;font-size:12px;">${d.endTime}</span>
+          </div>
+        </div>
+      `).join('');
+    })
+    .catch(() => {
+      list.innerHTML = '<div style="color:#555;font-size:13px;text-align:center;">기록을 불러올 수 없어요 😢</div>';
+    });
+}
+
 function goToSelect() {
   selectedDay = null;
   selectedHour = null;
   localStorage.removeItem('grp_session');
   if (timerInterval) clearInterval(timerInterval);
   show('screen-select');
-  buildDayGrid();
+  loadCompletedDays();
   document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
 }
 
