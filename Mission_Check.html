@@ -189,7 +189,7 @@ input[type=text]:focus{border-color:#9377f4;}
     <div class="timer-end-date" id="t-end-date"></div>
   </div>
   <button class="btn" onclick="completeFasting()">단식 시간 종료하기</button>
-  <button class="btn btn-outline" style="margin-top:10px;" onclick="show('screen-history');loadHistory();">내 기록 보기</button>
+  <button class="btn btn-outline" style="margin-top:10px;" onclick="show('screen-history');loadHistory();">단식 기록 보기</button>
   <button class="btn btn-outline" style="margin-top:10px;" onclick="goToSelect()">다시 설정하기</button>
 </div>
 
@@ -218,15 +218,46 @@ input[type=text]:focus{border-color:#9377f4;}
     </div>
   </div>
   <button class="btn" onclick="goToSelect()">단식 시작하기</button>
-  <button class="btn btn-outline" style="margin-top:10px;" onclick="show('screen-history');loadHistory();">내 기록 보기</button>
+  <button class="btn btn-outline" style="margin-top:10px;" onclick="show('screen-history');loadHistory();">단식 기록 보기</button>
 </div>
 
 <!-- 기록 보기 -->
 <div class="screen" id="screen-history">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
-  <div class="title" style="margin-bottom:1.5rem;">내 미션 기록</div>
+  <div class="title" style="margin-bottom:1.5rem;">장 대사 리셋 기록</div>
   <div id="history-list" style="margin-bottom:1.5rem;"></div>
   <button class="btn btn-outline" onclick="history.go(-1) || show('screen-timer');">돌아가기</button>
+</div>
+
+<!-- DAY6 완료 결과 화면 -->
+<div class="screen" id="screen-result">
+  <div id="result-card-1" style="background:#0d0d1a;border-radius:16px;padding:24px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:16px;">
+      <div style="width:7px;height:7px;border-radius:50%;background:#9377f4;"></div>
+      <span style="color:#9377f4;font-size:11px;letter-spacing:0.08em;font-weight:500;">GOOD ROUTINE</span>
+    </div>
+    <div style="color:#aaa;font-size:13px;margin-bottom:4px;" id="result-name-label"></div>
+    <div style="color:#fff;font-size:22px;font-weight:700;margin-bottom:4px;" id="result-round-title"></div>
+    <div style="color:#555;font-size:12px;margin-bottom:24px;" id="result-period"></div>
+    <div id="result-chart" style="margin-bottom:24px;"></div>
+    <div style="color:#aaa;font-size:12px;margin-bottom:4px;">누적 장 휴식 시간</div>
+    <div style="margin-bottom:20px;">
+      <span style="color:#fff;font-size:48px;font-weight:700;" id="result-total-h"></span>
+      <span style="color:#9377f4;font-size:24px;font-weight:600;"> h</span>
+      <span style="color:#aaa;font-size:16px;" id="result-total-m"></span>
+    </div>
+    <div style="text-align:center;color:#888;font-size:12px;line-height:1.8;margin-bottom:16px;">
+      6일 장 대사 리셋 루틴을 활용해<br>장 건강을 위한 습관으로<br>지속해 보세요
+    </div>
+    <div style="text-align:center;">
+      <div style="display:inline-flex;align-items:center;gap:6px;">
+        <div style="width:6px;height:6px;border-radius:50%;background:#9377f4;"></div>
+        <span style="color:#9377f4;font-size:11px;letter-spacing:0.1em;font-weight:600;">GOOD ROUTINE</span>
+      </div>
+    </div>
+  </div>
+  <button class="btn" onclick="saveResultImage()">이미지 저장</button>
+  <button class="btn btn-outline" style="margin-top:10px;" onclick="goToSelect()">다음 회차 시작하기</button>
 </div>
 
 <!-- 인증 카드 -->
@@ -431,8 +462,12 @@ function startFastingManual() {
   if (isNaN(h) || isNaN(m)) { alert('시작 시간을 입력해 주세요!'); return; }
   if (h < 0 || h > 23 || m < 0 || m > 59) { alert('올바른 시간을 입력해 주세요!'); return; }
   const now = new Date();
-  const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0).getTime();
-  if (startTime > now.getTime()) { alert('과거 시간만 입력 가능해요!'); return; }
+  // 오늘 해당 시간으로 먼저 시도
+  let startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0).getTime();
+  // 오늘 시간이 현재보다 미래면 어제로
+  if (startTime > now.getTime()) {
+    startTime = startTime - 24 * 3600000;
+  }
   const session = { day: selectedDay, hour: selectedHour, startTime: startTime };
   localStorage.setItem('grp_session', JSON.stringify(session));
   show('screen-timer');
@@ -509,7 +544,14 @@ function completeFasting() {
   localStorage.setItem('grp_last_day', s.day.toString());
   localStorage.removeItem('grp_session');
   if (timerInterval) clearInterval(timerInterval);
-  show('screen-card');
+
+  // DAY6 완료면 결과 화면으로
+  if (parseInt(s.day) === 6) {
+    show('screen-card');
+    setTimeout(() => loadResultScreen(), 500);
+  } else {
+    show('screen-card');
+  }
 }
 
 let eatingInterval = null;
@@ -578,7 +620,121 @@ function formatNextFastTime(d) {
   return month + '월 ' + date + '일 (' + day + ') ' + ampm + ' ' + hh + ':' + m;
 }
 
-function loadHistory() {
+function loadResultScreen() {
+  const name = localStorage.getItem('grp_name') || '';
+  const round = parseInt(localStorage.getItem('grp_round') || '1');
+
+  const roundNames = ['첫', '두', '세', '네', '다섯', '여섯', '일곱'];
+  const roundName = (round <= 7 ? roundNames[round-1] : round) + '번째';
+
+  document.getElementById('result-name-label').textContent = name + '님의';
+  document.getElementById('result-round-title').textContent = roundName + ' 장 대사 리셋';
+
+  fetch('https://script.google.com/macros/s/AKfycbw3KwnLFc_r_494ExmLrtU7M58rEx1qqRhIlSFGQBRgoVD-DKnqhklwRgYQAuQB6ZwO8A/exec?name=' + encodeURIComponent(name))
+    .then(r => r.json())
+    .then(data => {
+      if (!data.length) return;
+
+      // 기간 계산
+      const startDate = data[0].startTime ? parseSheetDate(data[0].startTime) : null;
+      const endDate = data[data.length-1].endTime ? parseSheetDate(data[data.length-1].endTime) : null;
+      if (startDate && endDate) {
+        document.getElementById('result-period').textContent =
+          formatShortDate(startDate) + ' — ' + formatShortDate(endDate);
+      }
+
+      // DAY별 실제 단식 시간
+      const dayMap = {};
+      data.forEach(d => {
+        const day = parseInt(d.day);
+        const mins = parseActualMins(d.actual);
+        if (!dayMap[day] || mins > dayMap[day]) dayMap[day] = mins;
+      });
+
+      // 바차트 그리기
+      const maxMins = Math.max(...Object.values(dayMap), 16*60);
+      const chartHtml = drawBarChart(dayMap, maxMins);
+      document.getElementById('result-chart').innerHTML = chartHtml;
+
+      // 누적 시간
+      const totalMins = Object.values(dayMap).reduce((a, b) => a + b, 0);
+      const totalH = Math.floor(totalMins / 60);
+      const totalM = totalMins % 60;
+      document.getElementById('result-total-h').textContent = totalH;
+      document.getElementById('result-total-m').textContent = totalM > 0 ? totalM + 'm' : '';
+
+      show('screen-result');
+    })
+    .catch(() => { show('screen-result'); });
+}
+
+function drawBarChart(dayMap, maxMins) {
+  const days = [1,2,3,4,5,6];
+  const barWidth = 36;
+  const gap = 12;
+  const chartH = 120;
+  const totalW = days.length * (barWidth + gap) - gap;
+
+  const bars = days.map((day, i) => {
+    const mins = dayMap[day] || 0;
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    const barH = mins > 0 ? Math.max((mins / maxMins) * chartH, 20) : 4;
+    const x = i * (barWidth + gap);
+    const y = chartH - barH;
+
+    return `
+      <g>
+        <rect x="${x}" y="${y}" width="${barWidth}" height="${barH}" rx="6" fill="${mins > 0 ? '#9377f4' : '#2a2a2a'}"/>
+        ${mins > 0 ? `
+          <text x="${x + barWidth/2}" y="${y - 4}" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="DM Sans, sans-serif">${h}h</text>
+          ${m > 0 ? `<text x="${x + barWidth/2}" y="${y + 8}" text-anchor="middle" fill="#aaa" font-size="9" font-family="DM Sans, sans-serif">${m}m</text>` : ''}
+        ` : ''}
+        <text x="${x + barWidth/2}" y="${chartH + 16}" text-anchor="middle" fill="#555" font-size="10" font-family="DM Sans, sans-serif">DAY ${day}</text>
+      </g>`;
+  }).join('');
+
+  return `<svg width="100%" viewBox="0 0 ${totalW} ${chartH + 24}" xmlns="http://www.w3.org/2000/svg">
+    <line x1="0" y1="0" x2="${totalW}" y2="0" stroke="#2a2a2a" stroke-width="0.5"/>
+    ${bars}
+  </svg>`;
+}
+
+function parseActualMins(actual) {
+  if (!actual) return 0;
+  const match = actual.match(/(\d+)h\s*(\d+)?m?/);
+  if (!match) return 0;
+  return (parseInt(match[1]) || 0) * 60 + (parseInt(match[2]) || 0);
+}
+
+function parseSheetDate(str) {
+  if (!str) return null;
+  if (str.includes('T')) return new Date(str);
+  // "5월 3일 오후 4:09" 형식
+  try {
+    const now = new Date();
+    const year = now.getFullYear();
+    const monthMatch = str.match(/(\d+)월/);
+    const dayMatch = str.match(/(\d+)일/);
+    const isPm = str.includes('오후');
+    const timeMatch = str.match(/(\d+):(\d+)/);
+    if (!monthMatch || !dayMatch || !timeMatch) return null;
+    let h = parseInt(timeMatch[1]);
+    const m = parseInt(timeMatch[2]);
+    if (isPm && h !== 12) h += 12;
+    if (!isPm && h === 12) h = 0;
+    return new Date(year, parseInt(monthMatch[1])-1, parseInt(dayMatch[1]), h, m);
+  } catch(e) { return null; }
+}
+
+function formatShortDate(d) {
+  if (!d) return '';
+  return (d.getMonth()+1) + '.' + String(d.getDate()).padStart(2,'0');
+}
+
+function saveResultImage() {
+  alert('이미지 저장 기능은 준비 중이에요!\n스크린샷으로 저장해 주세요 📸');
+}
   const name = localStorage.getItem('grp_name');
   const list = document.getElementById('history-list');
   list.innerHTML = '<div style="color:#555;font-size:13px;text-align:center;">불러오는 중...</div>';
@@ -598,7 +754,7 @@ function loadHistory() {
             <div style="width:6px;height:6px;border-radius:50%;background:#9377f4;"></div>
             <span style="color:#9377f4;font-size:11px;letter-spacing:0.08em;">good routine project</span>
           </div>
-          <div style="color:#9377f4;font-size:12px;font-weight:600;margin-bottom:4px;">${d.day}일차 미션 완료!</div>
+          <div style="color:#9377f4;font-size:12px;font-weight:600;margin-bottom:4px;">${d.day}일차 단식 기록</div>
           <div style="display:flex;gap:8px;margin-bottom:1rem;">
             <div style="background:#1a1a1a;border:1px solid #9377f4;border-radius:8px;padding:8px 14px;text-align:center;">
               <div style="color:#555;font-size:10px;margin-bottom:3px;">DAY</div>
