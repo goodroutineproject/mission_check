@@ -732,7 +732,8 @@ function formatShortDate(d) {
 function saveResultImage() {
   alert('이미지 저장 기능은 준비 중이에요!\n스크린샷으로 저장해 주세요 📸');
 }
-  const name = localStorage.getItem('grp_name');
+
+function loadHistory() {
   const list = document.getElementById('history-list');
   list.innerHTML = '<div style="color:#555;font-size:13px;text-align:center;">불러오는 중...</div>';
   fetch('https://script.google.com/macros/s/AKfycbw3KwnLFc_r_494ExmLrtU7M58rEx1qqRhIlSFGQBRgoVD-DKnqhklwRgYQAuQB6ZwO8A/exec?name=' + encodeURIComponent(name))
