@@ -683,15 +683,12 @@ function drawBarChart(dayMap, maxMins) {
     const x = i * (barWidth + gap);
     const y = chartH - barH;
 
-    return `
-      <g>
-        <rect x="${x}" y="${y}" width="${barWidth}" height="${barH}" rx="6" fill="${mins > 0 ? '#9377f4' : '#2a2a2a'}"/>
-        ${mins > 0 ? `
-          <text x="${x + barWidth/2}" y="${y - 4}" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="DM Sans, sans-serif">${h}h</text>
-          ${m > 0 ? `<text x="${x + barWidth/2}" y="${y + 8}" text-anchor="middle" fill="#aaa" font-size="9" font-family="DM Sans, sans-serif">${m}m</text>` : ''}
-        ` : ''}
-        <text x="${x + barWidth/2}" y="${chartH + 16}" text-anchor="middle" fill="#555" font-size="10" font-family="DM Sans, sans-serif">DAY ${day}</text>
-      </g>`;
+    const labelText = mins > 0 ? '<text x="' + (x + barWidth/2) + '" y="' + (y - 4) + '" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="DM Sans, sans-serif">' + h + 'h</text>' + (m > 0 ? '<text x="' + (x + barWidth/2) + '" y="' + (y + 8) + '" text-anchor="middle" fill="#aaa" font-size="9" font-family="DM Sans, sans-serif">' + m + 'm</text>' : '') : '';
+    return '<g>' +
+      '<rect x="' + x + '" y="' + y + '" width="' + barWidth + '" height="' + barH + '" rx="6" fill="' + (mins > 0 ? '#9377f4' : '#2a2a2a') + '"/>' +
+      labelText +
+      '<text x="' + (x + barWidth/2) + '" y="' + (chartH + 16) + '" text-anchor="middle" fill="#555" font-size="10" font-family="DM Sans, sans-serif">DAY ' + day + '</text>' +
+      '</g>';
   }).join('');
 
   return `<svg width="100%" viewBox="0 0 ${totalW} ${chartH + 24}" xmlns="http://www.w3.org/2000/svg">
