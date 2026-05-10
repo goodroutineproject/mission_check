@@ -381,7 +381,7 @@ function buildDayGrid(completedDays) {
 
     // 6일 모두 완료시 다음 회차 안내
     const doneDays = completed.map(d => parseInt(d.day));
-    const allDone = [1,2,3,4,5,6].every(d => doneDays.includes(d));
+    const allDone = doneDays.length > 0 && [1,2,3,4,5,6].every(d => doneDays.includes(d));
 
     if (allDone) {
       header += `
