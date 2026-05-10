@@ -162,6 +162,9 @@ input[type=text]:focus{border-color:#9377f4;}
       <div class="h-label">레벨3 기준</div>
     </div>
   </div>
+  <div id="next-round-btn" style="display:none;margin-bottom:12px;">
+    <button class="btn" style="background:#1a1050;border:0.5px solid #9377f4;color:#9377f4;" onclick="startNextRound()">✨ <span id="next-round-label"></span>회차 시작하기</button>
+  </div>
   <button class="btn" onclick="startFasting()">지금 시각으로 단식 시작!</button>
   <div style="margin-top:16px;text-align:center;">
     <div style="color:#555;font-size:12px;margin-bottom:8px;">이미 시작했다면 시간 직접 입력</div>
@@ -366,7 +369,15 @@ function buildDayGrid(completedDays) {
   const doneList = document.getElementById('done-list');
   if (doneList) {
     // 현재 회차 표시
-    let header = `<div style="color:#555;font-size:12px;margin-bottom:8px;">${round}회차 진행 중</div>`;
+    let header = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="color:#555;font-size:12px;">${round}회차 진행 중</div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <input type="number" id="round-input" min="1" max="99" value="${round}" style="display:none;width:50px;background:#1a1a1a;border:0.5px solid #9377f4;border-radius:6px;padding:4px 8px;color:#fff;font-size:12px;text-align:center;font-family:'DM Sans',sans-serif;outline:none;">
+          <span style="color:#555;font-size:11px;cursor:pointer;border:0.5px solid #333;border-radius:6px;padding:2px 8px;" onclick="toggleRoundEdit()">회차 수정</span>
+          <span id="round-confirm-btn" style="display:none;color:#fff;font-size:11px;cursor:pointer;background:#9377f4;border-radius:6px;padding:2px 8px;" onclick="confirmRoundEdit()">확인</span>
+        </div>
+      </div>`;
 
     // 6일 모두 완료시 다음 회차 안내
     const doneDays = completed.map(d => parseInt(d.day));
@@ -376,8 +387,7 @@ function buildDayGrid(completedDays) {
       header += `
         <div style="background:#1a1050;border:0.5px solid #9377f4;border-radius:10px;padding:14px;margin-bottom:12px;text-align:center;">
           <div style="color:#9377f4;font-size:14px;font-weight:700;margin-bottom:6px;">🎉 ${round}회차 완주!</div>
-          <div style="color:#888;font-size:12px;margin-bottom:12px;">${round+1}회차를 시작할 수 있어요</div>
-          <button class="btn" style="padding:10px;" onclick="startNextRound()">✨ ${round+1}회차 시작하기</button>
+          <div style="color:#888;font-size:12px;">${round+1}회차를 시작하려면 아래에서 DAY 1을 선택해 주세요</div>
         </div>`;
     }
 
@@ -402,6 +412,17 @@ function buildDayGrid(completedDays) {
   const doneDays2 = completed.map(d => parseInt(d.day));
   const allDone2 = [1,2,3,4,5,6].every(d => doneDays2.includes(d));
 
+  const nextRoundBtn = document.getElementById('next-round-btn');
+  const nextRoundLabel = document.getElementById('next-round-label');
+  if (nextRoundBtn) {
+    if (allDone2) {
+      nextRoundBtn.style.display = 'block';
+      if (nextRoundLabel) nextRoundLabel.textContent = round + 1;
+    } else {
+      nextRoundBtn.style.display = 'none';
+    }
+  }
+
   for (let i = 1; i <= 6; i++) {
     const btn = document.createElement('div');
     const isDone = doneDays2.includes(i);
@@ -412,6 +433,24 @@ function buildDayGrid(completedDays) {
     if (!isDone && !allDone2) btn.onclick = () => selectDay(i);
     grid.appendChild(btn);
   }
+}
+
+function toggleRoundEdit() {
+  const input = document.getElementById('round-input');
+  const confirm = document.getElementById('round-confirm-btn');
+  if (input && confirm) {
+    input.style.display = 'inline-block';
+    confirm.style.display = 'inline-block';
+  }
+}
+
+function confirmRoundEdit() {
+  const input = document.getElementById('round-input');
+  if (!input) return;
+  const newRound = parseInt(input.value);
+  if (isNaN(newRound) || newRound < 1) { alert('올바른 회차를 입력해 주세요!'); return; }
+  localStorage.setItem('grp_round', newRound.toString());
+  loadCompletedDays();
 }
 
 function startNextRound() {
