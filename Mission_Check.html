@@ -450,6 +450,8 @@ function confirmRoundEdit() {
   const newRound = parseInt(input.value);
   if (isNaN(newRound) || newRound < 1) { alert('올바른 회차를 입력해 주세요!'); return; }
   localStorage.setItem('grp_round', newRound.toString());
+  const doneList = document.getElementById('done-list');
+  if (doneList) doneList.innerHTML = '';
   loadCompletedDays();
 }
 
@@ -472,7 +474,7 @@ function resetAll() {
 
 function selectDay(d) {
   selectedDay = d;
-  buildDayGrid();
+  loadCompletedDays();
 }
 
 function selectHour(h) {
