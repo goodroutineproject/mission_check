@@ -410,7 +410,7 @@ function buildDayGrid(completedDays) {
   }
 
   const doneDays2 = completed.map(d => parseInt(d.day));
-  const allDone2 = [1,2,3,4,5,6].every(d => doneDays2.includes(d));
+  const allDone2 = doneDays2.length > 0 && [1,2,3,4,5,6].every(d => doneDays2.includes(d));
 
   const nextRoundBtn = document.getElementById('next-round-btn');
   const nextRoundLabel = document.getElementById('next-round-label');
