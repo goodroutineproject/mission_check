@@ -143,7 +143,7 @@ input[type=text]:focus{border-color:#9377f4;}
 <div class="screen" id="screen-timer">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
   <div class="timer-box">
-    <div class="timer-challenge">6일 장 대사 리셋 챌린지</div>
+    <div class="timer-challenge" id="t-challenge">6일 장 대사 리셋 챌린지</div>
     <div class="timer-day" id="t-day"></div>
     <div style="color:#555;font-size:12px;margin-bottom:4px;" id="t-goal-badge"></div>
     <div class="timer-name" id="t-name"></div>
@@ -339,6 +339,8 @@ function startTimerDisplay(startTime,hour,day){
   document.getElementById('t-day').textContent='DAY '+day;
   document.getElementById('t-name').textContent=name;
   document.getElementById('t-goal-badge').textContent='단식 목표시간 '+hour+'h 중';
+  var round=localStorage.getItem('grp_round')||'1';
+  document.getElementById('t-challenge').textContent='6일 장 대사 리셋 챌린지 ['+round+'차]';
   var endTime=startTime+hour*3600000;
   function update(){
     var now=new Date().getTime();var elapsed=now-startTime;
