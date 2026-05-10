@@ -24,8 +24,6 @@ body{background:#000;color:#fff;font-family:'DM Sans',sans-serif;min-height:100v
 .guide-table .cell{padding:10px 8px;border-right:0.5px solid #333;}
 .guide-table .cell:last-child{border-right:none;}
 .guide-table .head{background:#1a1a1a;}
-.guide-table .head .stage{color:#9377f4;font-size:10px;font-weight:600;}
-.guide-table .head .day{color:#555;font-size:10px;margin-top:2px;}
 .guide-table .lv{color:#fff;font-size:12px;font-weight:500;}
 .guide-table .h{color:#fff;font-size:13px;text-align:center;}
 .note{color:#555;font-size:11px;margin-bottom:2rem;}
@@ -50,13 +48,10 @@ input[type=text]:focus{border-color:#9377f4;}
 .timer-challenge{color:#9377f4;font-size:28px;font-weight:700;margin-bottom:4px;}
 .timer-day{color:#fff;font-size:28px;font-weight:700;margin-bottom:4px;}
 .timer-name{color:#9377f4;font-size:14px;font-weight:500;margin-bottom:1.5rem;}
-.timer-elapsed-label{color:#888;font-size:36px;font-weight:700;margin-bottom:6px;}
 .timer-elapsed{color:#fff;font-size:36px;font-weight:700;margin-bottom:4px;}
 .timer-elapsed-unit{color:#9377f4;font-size:36px;font-weight:700;margin-bottom:1.5rem;}
 .timer-start-time{color:#9377f4;font-size:13px;margin-bottom:4px;}
-.timer-end-label{color:#9377f4;font-size:13px;margin-bottom:4px;}
 .timer-end-time{color:#9377f4;font-size:13px;font-weight:500;margin-bottom:4px;}
-.timer-end-date{color:#9377f4;font-size:11px;}
 .card{background:#111;border:0.5px solid #222;border-radius:16px;padding:2rem;margin-bottom:1rem;}
 .card-logo-row{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;}
 .card-name-label{color:#666;font-size:12px;margin-bottom:4px;}
@@ -76,13 +71,11 @@ input[type=text]:focus{border-color:#9377f4;}
 .card-footer{border-top:0.5px solid #222;padding-top:1rem;text-align:center;}
 .card-complete{color:#9377f4;font-size:16px;font-weight:600;margin-bottom:4px;}
 .card-challenge{color:#444;font-size:11px;}
-.back-btn{background:none;border:none;color:#555;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:1.5rem;padding:0;}
 </style>
 </head>
 <body>
 <div class="app">
 
-<!-- 홈 화면 -->
 <div class="screen active" id="screen-home">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
   <div class="title">6일 장 대사 리셋</div>
@@ -92,46 +85,26 @@ input[type=text]:focus{border-color:#9377f4;}
   <div class="guide-table">
     <div class="row">
       <div class="cell head"></div>
-      <div class="cell head" style="text-align:center;"><div class="day" style="color:#9377f4;font-size:11px;font-weight:600;">DAY 1</div></div>
-      <div class="cell head" style="text-align:center;"><div class="day" style="color:#9377f4;font-size:11px;font-weight:600;">DAY 2~3</div></div>
-      <div class="cell head" style="text-align:center;"><div class="day" style="color:#9377f4;font-size:11px;font-weight:600;">DAY 4~6</div></div>
+      <div class="cell head" style="text-align:center;"><div style="color:#9377f4;font-size:11px;font-weight:600;">DAY 1</div></div>
+      <div class="cell head" style="text-align:center;"><div style="color:#9377f4;font-size:11px;font-weight:600;">DAY 2~3</div></div>
+      <div class="cell head" style="text-align:center;"><div style="color:#9377f4;font-size:11px;font-weight:600;">DAY 4~6</div></div>
     </div>
-    <div class="row">
-      <div class="cell"><span class="lv">레벨3</span></div>
-      <div class="cell"><div class="h">24h</div></div>
-      <div class="cell"><div class="h">18h</div></div>
-      <div class="cell"><div class="h">16h</div></div>
-    </div>
-    <div class="row">
-      <div class="cell"><span class="lv">레벨2</span></div>
-      <div class="cell"><div class="h">18h</div></div>
-      <div class="cell"><div class="h">18h</div></div>
-      <div class="cell"><div class="h">16h</div></div>
-    </div>
-    <div class="row">
-      <div class="cell"><span class="lv">레벨1</span></div>
-      <div class="cell"><div class="h">16h</div></div>
-      <div class="cell"><div class="h">16h</div></div>
-      <div class="cell"><div class="h">16h</div></div>
-    </div>
+    <div class="row"><div class="cell"><span class="lv">레벨3</span></div><div class="cell"><div class="h">24h</div></div><div class="cell"><div class="h">18h</div></div><div class="cell"><div class="h">16h</div></div></div>
+    <div class="row"><div class="cell"><span class="lv">레벨2</span></div><div class="cell"><div class="h">18h</div></div><div class="cell"><div class="h">18h</div></div><div class="cell"><div class="h">16h</div></div></div>
+    <div class="row"><div class="cell"><span class="lv">레벨1</span></div><div class="cell"><div class="h">16h</div></div><div class="cell"><div class="h">16h</div></div><div class="cell"><div class="h">16h</div></div></div>
   </div>
   <div class="note">* 견디기 힘들 땐 레벨을 조정해 주세요.</div>
   <button class="btn" onclick="goToSetup()">시작하기</button>
 </div>
 
-<!-- 닉네임 입력 -->
 <div class="screen" id="screen-name">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
   <div class="title" style="margin-bottom:0.5rem;">반가워요!</div>
   <div class="desc">닉네임을 입력해 주세요.<br>한 번만 입력하면 기억할게요 :)</div>
-  <div class="input-wrap">
-    <div class="input-label">닉네임</div>
-    <input type="text" id="nickname-input" placeholder="예) 루틴이" maxlength="10">
-  </div>
+  <div class="input-wrap"><div class="input-label">닉네임</div><input type="text" id="nickname-input" placeholder="예) 루틴이" maxlength="10"></div>
   <button class="btn" onclick="saveName()">다음</button>
 </div>
 
-<!-- 증상소거 체크 안내 -->
 <div class="screen" id="screen-symptom">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
   <div class="title" style="margin-bottom:0.5rem;">시작 전 증상 체크!</div>
@@ -140,7 +113,6 @@ input[type=text]:focus{border-color:#9377f4;}
   <button class="btn btn-outline" style="margin-top:10px;" onclick="goToSelectFromSymptom()">체크 완료, 단식 시작하기</button>
 </div>
 
-<!-- DAY + 시간 선택 -->
 <div class="screen" id="screen-select">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
   <div class="title" style="margin-bottom:1.5rem;">오늘의 미션 설정</div>
@@ -149,18 +121,9 @@ input[type=text]:focus{border-color:#9377f4;}
   <div class="day-grid" id="day-grid"></div>
   <div class="section-label">단식 시간 선택</div>
   <div class="hour-grid">
-    <div class="hour-btn" id="h16" onclick="selectHour(16)">
-      <div class="h-num">16h</div>
-      <div class="h-label">레벨1 기준</div>
-    </div>
-    <div class="hour-btn" id="h18" onclick="selectHour(18)">
-      <div class="h-num">18h</div>
-      <div class="h-label">레벨2 기준</div>
-    </div>
-    <div class="hour-btn" id="h24" onclick="selectHour(24)">
-      <div class="h-num">24h</div>
-      <div class="h-label">레벨3 기준</div>
-    </div>
+    <div class="hour-btn" id="h16" onclick="selectHour(16)"><div class="h-num">16h</div><div class="h-label">레벨1 기준</div></div>
+    <div class="hour-btn" id="h18" onclick="selectHour(18)"><div class="h-num">18h</div><div class="h-label">레벨2 기준</div></div>
+    <div class="hour-btn" id="h24" onclick="selectHour(24)"><div class="h-num">24h</div><div class="h-label">레벨3 기준</div></div>
   </div>
   <div id="next-round-btn" style="display:none;margin-bottom:12px;">
     <button class="btn" style="background:#1a1050;border:0.5px solid #9377f4;color:#9377f4;" onclick="startNextRound()">✨ <span id="next-round-label"></span>회차 시작하기</button>
@@ -177,7 +140,6 @@ input[type=text]:focus{border-color:#9377f4;}
   </div>
 </div>
 
-<!-- 진행 중 -->
 <div class="screen" id="screen-timer">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
   <div class="timer-box">
@@ -189,14 +151,12 @@ input[type=text]:focus{border-color:#9377f4;}
     <div class="timer-elapsed-unit">장 휴식 중</div>
     <div class="timer-start-time" id="t-start"></div>
     <div class="timer-end-time" id="t-end"></div>
-    <div class="timer-end-date" id="t-end-date"></div>
   </div>
   <button class="btn" onclick="completeFasting()">단식 시간 종료하기</button>
   <button class="btn btn-outline" style="margin-top:10px;" onclick="show('screen-history');loadHistory();">단식 기록 보기</button>
   <button class="btn btn-outline" style="margin-top:10px;" onclick="goToSelect()">다시 설정하기</button>
 </div>
 
-<!-- 식사 시간 모드 -->
 <div class="screen" id="screen-eating">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
   <div class="timer-box" style="text-align:center;padding:2rem 1.5rem;">
@@ -224,17 +184,15 @@ input[type=text]:focus{border-color:#9377f4;}
   <button class="btn btn-outline" style="margin-top:10px;" onclick="show('screen-history');loadHistory();">단식 기록 보기</button>
 </div>
 
-<!-- 기록 보기 -->
 <div class="screen" id="screen-history">
   <div class="logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
   <div class="title" style="margin-bottom:1.5rem;">장 대사 리셋 기록</div>
   <div id="history-list" style="margin-bottom:1.5rem;"></div>
-  <button class="btn btn-outline" onclick="history.go(-1) || show('screen-timer');">돌아가기</button>
+  <button class="btn btn-outline" onclick="show('screen-eating');">돌아가기</button>
 </div>
 
-<!-- DAY6 완료 결과 화면 -->
 <div class="screen" id="screen-result">
-  <div id="result-card-1" style="background:#0d0d1a;border-radius:16px;padding:24px;margin-bottom:12px;">
+  <div style="background:#0d0d1a;border-radius:16px;padding:24px;margin-bottom:12px;">
     <div style="display:flex;align-items:center;gap:6px;margin-bottom:16px;">
       <div style="width:7px;height:7px;border-radius:50%;background:#9377f4;"></div>
       <span style="color:#9377f4;font-size:11px;letter-spacing:0.08em;font-weight:500;">GOOD ROUTINE</span>
@@ -249,54 +207,28 @@ input[type=text]:focus{border-color:#9377f4;}
       <span style="color:#9377f4;font-size:24px;font-weight:600;"> h</span>
       <span style="color:#aaa;font-size:16px;" id="result-total-m"></span>
     </div>
-    <div style="text-align:center;color:#888;font-size:12px;line-height:1.8;margin-bottom:16px;">
-      6일 장 대사 리셋 루틴을 활용해<br>장 건강을 위한 습관으로<br>지속해 보세요
-    </div>
-    <div style="text-align:center;">
-      <div style="display:inline-flex;align-items:center;gap:6px;">
-        <div style="width:6px;height:6px;border-radius:50%;background:#9377f4;"></div>
-        <span style="color:#9377f4;font-size:11px;letter-spacing:0.1em;font-weight:600;">GOOD ROUTINE</span>
-      </div>
-    </div>
+    <div style="text-align:center;color:#888;font-size:12px;line-height:1.8;margin-bottom:16px;">6일 장 대사 리셋 루틴을 활용해<br>장 건강을 위한 습관으로<br>지속해 보세요</div>
+    <div style="text-align:center;"><div style="display:inline-flex;align-items:center;gap:6px;"><div style="width:6px;height:6px;border-radius:50%;background:#9377f4;"></div><span style="color:#9377f4;font-size:11px;letter-spacing:0.1em;font-weight:600;">GOOD ROUTINE</span></div></div>
   </div>
   <button class="btn" onclick="saveResultImage()">이미지 저장</button>
   <button class="btn btn-outline" style="margin-top:10px;" onclick="goToSelect()">다음 회차 시작하기</button>
 </div>
 
-<!-- 인증 카드 -->
 <div class="screen" id="screen-card">
-  <div class="card" id="cert-card">
+  <div class="card">
     <div class="card-logo-row"><div class="logo-dot"></div><span class="logo-text">good routine project</span></div>
     <div class="card-name-label">참여자</div>
     <div class="card-name" id="c-name"></div>
     <div class="card-badges">
-      <div class="badge accent">
-        <div class="badge-label">DAY</div>
-        <div class="badge-val" id="c-day"></div>
-      </div>
-      <div class="badge">
-        <div class="badge-label">목표</div>
-        <div class="badge-val" id="c-goal"></div>
-      </div>
-      <div class="badge" style="flex:1;">
-        <div class="badge-label">실제 단식</div>
-        <div class="badge-val" id="c-actual"></div>
-      </div>
+      <div class="badge accent"><div class="badge-label">DAY</div><div class="badge-val" id="c-day"></div></div>
+      <div class="badge"><div class="badge-label">목표</div><div class="badge-val" id="c-goal"></div></div>
+      <div class="badge" style="flex:1;"><div class="badge-label">실제 단식</div><div class="badge-val" id="c-actual"></div></div>
     </div>
     <div class="card-times">
-      <div class="card-time-row">
-        <span class="card-time-label">시작</span>
-        <span class="card-time-val" id="c-start"></span>
-      </div>
-      <div class="card-time-row">
-        <span class="card-time-label">완료</span>
-        <span class="card-time-val accent" id="c-end"></span>
-      </div>
+      <div class="card-time-row"><span class="card-time-label">시작</span><span class="card-time-val" id="c-start"></span></div>
+      <div class="card-time-row"><span class="card-time-label">완료</span><span class="card-time-val accent" id="c-end"></span></div>
     </div>
-    <div class="card-footer">
-      <div class="card-complete" id="c-mission"></div>
-      <div class="card-challenge">6일 장 대사 리셋 챌린지</div>
-    </div>
+    <div class="card-footer"><div class="card-complete" id="c-mission"></div><div class="card-challenge">6일 장 대사 리셋 챌린지</div></div>
   </div>
   <button class="btn" onclick="goToEating()">식사 가능 시간 확인하기</button>
   <button class="btn" style="background:#1a1a1a;border:0.5px solid #9377f4;color:#9377f4;margin-top:10px;" onclick="window.open('https://phenomenal-twilight-06058d.netlify.app/','_blank')">오늘 증상 체크하기 →</button>
@@ -304,602 +236,253 @@ input[type=text]:focus{border-color:#9377f4;}
 </div>
 
 </div>
-
 <script>
-let selectedDay = null;
-let selectedHour = null;
-let timerInterval = null;
+var selectedDay=null,selectedHour=null,timerInterval=null,eatingInterval=null;
 
-// 링크 열자마자 세션 복구
-window.onload = function() {
-  const saved = localStorage.getItem('grp_session');
-  const name = localStorage.getItem('grp_name');
-  if (saved) {
-    const s = JSON.parse(saved);
-    selectedDay = s.day;
-    selectedHour = s.hour;
-    show('screen-timer');
-    startTimerDisplay(s.startTime, s.hour, s.day);
-  } else if (name) {
-    show('screen-eating');
-    startEatingDisplay();
-  }
+window.onload=function(){
+  var saved=localStorage.getItem('grp_session');
+  var name=localStorage.getItem('grp_name');
+  if(saved){var s=JSON.parse(saved);selectedDay=s.day;selectedHour=s.hour;show('screen-timer');startTimerDisplay(s.startTime,s.hour,s.day);}
+  else if(name){show('screen-eating');startEatingDisplay();}
 };
 
-function goToSelectFromSymptom() {
-  show('screen-select');
-  loadCompletedDays();
-  restoreSession();
+function goToSetup(){var name=localStorage.getItem('grp_name');if(!name){show('screen-name');}else{show('screen-select');loadCompletedDays();}}
+function goToSelectFromSymptom(){show('screen-select');loadCompletedDays();}
+function saveName(){var v=document.getElementById('nickname-input').value.trim();if(!v){alert('닉네임을 입력해 주세요!');return;}localStorage.setItem('grp_name',v);show('screen-symptom');}
+
+function loadCompletedDays(){
+  var name=localStorage.getItem('grp_name');
+  var round=localStorage.getItem('grp_round')||'1';
+  if(!name){buildDayGrid([]);return;}
+  fetch('https://script.google.com/macros/s/AKfycbw3KwnLFc_r_494ExmLrtU7M58rEx1qqRhIlSFGQBRgoVD-DKnqhklwRgYQAuQB6ZwO8A/exec?name='+encodeURIComponent(name)+'&round='+round)
+    .then(function(r){return r.json();}).then(function(data){buildDayGrid(data);}).catch(function(){buildDayGrid([]);});
 }
 
-function goToSetup() {
-  const name = localStorage.getItem('grp_name');
-  if (!name) {
-    show('screen-name');
-  } else {
-    show('screen-select');
-    loadCompletedDays();
-    restoreSession();
+function showDayDetail(d){alert('DAY '+d.day+'\n목표: '+d.goal+'\n실제 단식: '+d.actual+'\n시작: '+d.startTime+'\n완료: '+d.endTime);}
+
+function buildDayGrid(completedDays){
+  var grid=document.getElementById('day-grid');
+  var completed=completedDays||[];
+  var round=parseInt(localStorage.getItem('grp_round')||'1');
+  grid.innerHTML='';
+  var doneList=document.getElementById('done-list');
+  if(doneList){
+    var header='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">'+
+      '<div style="color:#555;font-size:12px;">'+round+'회차 진행 중</div>'+
+      '<div style="display:flex;align-items:center;gap:6px;">'+
+      '<input type="number" id="round-input" min="1" max="99" value="'+round+'" style="display:none;width:50px;background:#1a1a1a;border:0.5px solid #9377f4;border-radius:6px;padding:4px 8px;color:#fff;font-size:12px;text-align:center;font-family:DM Sans,sans-serif;outline:none;">'+
+      '<span style="color:#555;font-size:11px;cursor:pointer;border:0.5px solid #333;border-radius:6px;padding:2px 8px;" onclick="toggleRoundEdit()">회차 수정</span>'+
+      '<span id="round-confirm-btn" style="display:none;color:#fff;font-size:11px;cursor:pointer;background:#9377f4;border-radius:6px;padding:2px 8px;" onclick="confirmRoundEdit()">확인</span>'+
+      '</div></div>';
+    var doneDays=completed.map(function(d){return parseInt(d.day);});
+    var allDone=doneDays.length>0&&[1,2,3,4,5,6].every(function(d){return doneDays.includes(d);});
+    if(allDone){header+='<div style="background:#1a1050;border:0.5px solid #9377f4;border-radius:10px;padding:14px;margin-bottom:12px;text-align:center;"><div style="color:#9377f4;font-size:14px;font-weight:700;margin-bottom:6px;">🎉 '+round+'회차 완주!</div><div style="color:#888;font-size:12px;">'+(round+1)+'회차를 시작하려면 아래에서 DAY 1을 선택해 주세요</div></div>';}
+    if(completed.length>0){
+      var items=completed.map(function(d){
+        return '<div style="display:flex;justify-content:space-between;align-items:center;background:#111;border:0.5px solid #222;border-radius:8px;padding:10px 14px;margin-bottom:8px;">'+
+          '<span style="color:#9377f4;font-size:13px;font-weight:600;">✅ DAY '+d.day+'</span>'+
+          '<div style="display:flex;align-items:center;gap:10px;">'+
+          '<span style="color:#888;font-size:12px;">'+d.actual+' 단식 완료</span>'+
+          '<span style="color:#9377f4;font-size:12px;cursor:pointer;border:0.5px solid #9377f4;border-radius:6px;padding:2px 8px;" onclick="showDayDetail('+JSON.stringify(d)+')">보기</span>'+
+          '</div></div>';
+      }).join('');
+      doneList.innerHTML=header+items+'<div style="margin-top:16px;text-align:center;"><span style="color:#333;font-size:11px;cursor:pointer;text-decoration:underline;" onclick="resetAll()">완전히 리셋하기 (이전 데이터는 모두 사라집니다)</span></div>';
+    }else{doneList.innerHTML=header;}
   }
-}
-
-function showDayDetail(d) {
-  alert('DAY ' + d.day + '\n목표: ' + d.goal + '\n실제 단식: ' + d.actual + '\n시작: ' + d.startTime + '\n완료: ' + d.endTime);
-}
-
-function goToSetup() {
-  const name = localStorage.getItem('grp_name');
-  if (!name) {
-    show('screen-name');
-  } else {
-    show('screen-select');
-    loadCompletedDays();
-    restoreSession();
-  }
-}
-
-function loadCompletedDays() {
-  const name = localStorage.getItem('grp_name');
-  const round = localStorage.getItem('grp_round') || '1';
-  if (!name) { buildDayGrid([]); return; }
-  fetch('https://script.google.com/macros/s/AKfycbw3KwnLFc_r_494ExmLrtU7M58rEx1qqRhIlSFGQBRgoVD-DKnqhklwRgYQAuQB6ZwO8A/exec?name=' + encodeURIComponent(name) + '&round=' + round)
-    .then(r => r.json())
-    .then(data => buildDayGrid(data))
-    .catch(() => buildDayGrid([]));
-}
-
-function saveName() {
-  const v = document.getElementById('nickname-input').value.trim();
-  if (!v) { alert('닉네임을 입력해 주세요!'); return; }
-  localStorage.setItem('grp_name', v);
-  show('screen-symptom');
-}
-
-function buildDayGrid(completedDays) {
-  const grid = document.getElementById('day-grid');
-  const completed = completedDays || [];
-  const round = parseInt(localStorage.getItem('grp_round') || '1');
-  grid.innerHTML = '';
-
-  const doneList = document.getElementById('done-list');
-  if (doneList) {
-    // 현재 회차 표시
-    let header = `
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <div style="color:#555;font-size:12px;">${round}회차 진행 중</div>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <input type="number" id="round-input" min="1" max="99" value="${round}" style="display:none;width:50px;background:#1a1a1a;border:0.5px solid #9377f4;border-radius:6px;padding:4px 8px;color:#fff;font-size:12px;text-align:center;font-family:'DM Sans',sans-serif;outline:none;">
-          <span style="color:#555;font-size:11px;cursor:pointer;border:0.5px solid #333;border-radius:6px;padding:2px 8px;" onclick="toggleRoundEdit()">회차 수정</span>
-          <span id="round-confirm-btn" style="display:none;color:#fff;font-size:11px;cursor:pointer;background:#9377f4;border-radius:6px;padding:2px 8px;" onclick="confirmRoundEdit()">확인</span>
-        </div>
-      </div>`;
-
-    // 6일 모두 완료시 다음 회차 안내
-    const doneDays = completed.map(d => parseInt(d.day));
-    const allDone = doneDays.length > 0 && [1,2,3,4,5,6].every(d => doneDays.includes(d));
-
-    if (allDone) {
-      header += `
-        <div style="background:#1a1050;border:0.5px solid #9377f4;border-radius:10px;padding:14px;margin-bottom:12px;text-align:center;">
-          <div style="color:#9377f4;font-size:14px;font-weight:700;margin-bottom:6px;">🎉 ${round}회차 완주!</div>
-          <div style="color:#888;font-size:12px;">${round+1}회차를 시작하려면 아래에서 DAY 1을 선택해 주세요</div>
-        </div>`;
-    }
-
-    if (completed.length > 0) {
-      doneList.innerHTML = header + completed.map(d => `
-        <div style="display:flex;justify-content:space-between;align-items:center;background:#111;border:0.5px solid #222;border-radius:8px;padding:10px 14px;margin-bottom:8px;">
-          <span style="color:#9377f4;font-size:13px;font-weight:600;">✅ DAY ${d.day}</span>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span style="color:#888;font-size:12px;">${d.actual} 단식 완료</span>
-            <span style="color:#9377f4;font-size:12px;cursor:pointer;border:0.5px solid #9377f4;border-radius:6px;padding:2px 8px;" onclick='showDayDetail(${JSON.stringify(d)})'>보기</span>
-          </div>
-        </div>
-      `).join('') + `
-        <div style="margin-top:16px;text-align:center;">
-          <span style="color:#333;font-size:11px;cursor:pointer;text-decoration:underline;" onclick="resetAll()">완전히 리셋하기 (이전 데이터는 모두 사라집니다)</span>
-        </div>`;
-    } else {
-      doneList.innerHTML = header;
-    }
-  }
-
-  const doneDays2 = completed.map(d => parseInt(d.day));
-  const allDone2 = doneDays2.length > 0 && [1,2,3,4,5,6].every(d => doneDays2.includes(d));
-
-  const nextRoundBtn = document.getElementById('next-round-btn');
-  const nextRoundLabel = document.getElementById('next-round-label');
-  if (nextRoundBtn) {
-    if (allDone2) {
-      nextRoundBtn.style.display = 'block';
-      if (nextRoundLabel) nextRoundLabel.textContent = round + 1;
-    } else {
-      nextRoundBtn.style.display = 'none';
-    }
-  }
-
-  for (let i = 1; i <= 6; i++) {
-    const btn = document.createElement('div');
-    const isDone = doneDays2.includes(i);
-    const isSelected = selectedDay === i;
-    btn.className = 'day-btn' + (isSelected ? ' selected' : '');
-    if (isDone || allDone2) btn.style.cssText = 'opacity:0.3;cursor:not-allowed;';
-    btn.innerHTML = '<div style="font-weight:600;color:inherit;">DAY</div><div style="font-size:16px;font-weight:700;color:inherit;">' + i + '</div>';
-    if (!isDone && !allDone2) btn.onclick = () => selectDay(i);
+  var doneDays2=completed.map(function(d){return parseInt(d.day);});
+  var allDone2=doneDays2.length>0&&[1,2,3,4,5,6].every(function(d){return doneDays2.includes(d);});
+  var nrb=document.getElementById('next-round-btn');
+  var nrl=document.getElementById('next-round-label');
+  if(nrb){if(allDone2){nrb.style.display='block';if(nrl)nrl.textContent=round+1;}else{nrb.style.display='none';}}
+  for(var i=1;i<=6;i++){
+    var btn=document.createElement('div');
+    var isDone=doneDays2.includes(i);
+    btn.className='day-btn'+(selectedDay===i?' selected':'');
+    if(isDone||allDone2)btn.style.cssText='opacity:0.3;cursor:not-allowed;';
+    btn.innerHTML='<div style="font-weight:600;color:inherit;">DAY</div><div style="font-size:16px;font-weight:700;color:inherit;">'+i+'</div>';
+    if(!isDone&&!allDone2)(function(day){btn.onclick=function(){selectDay(day);};})(i);
     grid.appendChild(btn);
   }
 }
 
-function toggleRoundEdit() {
-  const input = document.getElementById('round-input');
-  const confirm = document.getElementById('round-confirm-btn');
-  if (input && confirm) {
-    input.style.display = 'inline-block';
-    confirm.style.display = 'inline-block';
+function toggleRoundEdit(){var i=document.getElementById('round-input');var c=document.getElementById('round-confirm-btn');if(i&&c){i.style.display='inline-block';c.style.display='inline-block';}}
+function confirmRoundEdit(){var i=document.getElementById('round-input');if(!i)return;var n=parseInt(i.value);if(isNaN(n)||n<1){alert('올바른 회차를 입력해 주세요!');return;}localStorage.setItem('grp_round',n.toString());var dl=document.getElementById('done-list');if(dl)dl.innerHTML='';loadCompletedDays();}
+function startNextRound(){var r=parseInt(localStorage.getItem('grp_round')||'1');localStorage.setItem('grp_round',r+1);localStorage.removeItem('grp_session');loadCompletedDays();}
+function resetAll(){if(confirm('정말 초기화할까요?\n이전 기록이 모두 사라집니다.')){localStorage.removeItem('grp_session');localStorage.removeItem('grp_round');localStorage.removeItem('grp_name');localStorage.removeItem('grp_symptom_checked');show('screen-home');}}
+function selectDay(d){selectedDay=d;loadCompletedDays();}
+function selectHour(h){selectedHour=h;document.querySelectorAll('.hour-btn').forEach(function(b){b.classList.remove('selected');});document.getElementById('h'+h).classList.add('selected');}
+
+function startFastingManual(){
+  if(!selectedDay){alert('DAY를 선택해 주세요!');return;}
+  if(!selectedHour){alert('단식 시간을 선택해 주세요!');return;}
+  var h=parseInt(document.getElementById('manual-hour').value);
+  var m=parseInt(document.getElementById('manual-min').value);
+  if(isNaN(h)||isNaN(m)){alert('시작 시간을 입력해 주세요!');return;}
+  if(h<0||h>23||m<0||m>59){alert('올바른 시간을 입력해 주세요!');return;}
+  var now=new Date();
+  var startTime=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0).getTime();
+  if(startTime>now.getTime())startTime=startTime-24*3600000;
+  localStorage.setItem('grp_session',JSON.stringify({day:selectedDay,hour:selectedHour,startTime:startTime}));
+  show('screen-timer');startTimerDisplay(startTime,selectedHour,selectedDay);
+}
+
+function startFasting(){
+  if(!selectedDay){alert('DAY를 선택해 주세요!');return;}
+  if(!selectedHour){alert('단식 시간을 선택해 주세요!');return;}
+  var now=new Date().getTime();
+  localStorage.setItem('grp_session',JSON.stringify({day:selectedDay,hour:selectedHour,startTime:now}));
+  show('screen-timer');startTimerDisplay(now,selectedHour,selectedDay);
+}
+
+function startTimerDisplay(startTime,hour,day){
+  var name=localStorage.getItem('grp_name');
+  document.getElementById('t-day').textContent='DAY '+day;
+  document.getElementById('t-name').textContent=name;
+  document.getElementById('t-goal-badge').textContent='단식 목표시간 '+hour+'h 중';
+  var endTime=startTime+hour*3600000;
+  function update(){
+    var now=new Date().getTime();var elapsed=now-startTime;
+    var eh=Math.floor(elapsed/3600000);var em=Math.floor((elapsed%3600000)/60000);
+    document.getElementById('t-start').textContent='단식 시작: '+formatDateTime(new Date(startTime));
+    document.getElementById('t-elapsed').textContent=eh+'시간 '+em+'분';
+    document.getElementById('t-end').textContent='완료 예정: '+formatDateTime(new Date(endTime));
   }
+  update();if(timerInterval)clearInterval(timerInterval);timerInterval=setInterval(update,30000);
 }
 
-function confirmRoundEdit() {
-  const input = document.getElementById('round-input');
-  if (!input) return;
-  const newRound = parseInt(input.value);
-  if (isNaN(newRound) || newRound < 1) { alert('올바른 회차를 입력해 주세요!'); return; }
-  localStorage.setItem('grp_round', newRound.toString());
-  const doneList = document.getElementById('done-list');
-  if (doneList) doneList.innerHTML = '';
-  loadCompletedDays();
-}
-
-function startNextRound() {
-  const round = parseInt(localStorage.getItem('grp_round') || '1');
-  localStorage.setItem('grp_round', round + 1);
+function completeFasting(){
+  var saved=localStorage.getItem('grp_session');if(!saved)return;
+  var s=JSON.parse(saved);var now=new Date().getTime();
+  var elapsed=now-s.startTime;var eh=Math.floor(elapsed/3600000);var em=Math.floor((elapsed%3600000)/60000);
+  var name=localStorage.getItem('grp_name');
+  document.getElementById('c-name').textContent=name;
+  document.getElementById('c-day').textContent=s.day;
+  document.getElementById('c-goal').textContent=s.hour+'h';
+  document.getElementById('c-actual').textContent=eh+'h '+em+'m';
+  document.getElementById('c-start').textContent=formatTime(new Date(s.startTime));
+  document.getElementById('c-end').textContent=formatTime(new Date(now));
+  document.getElementById('c-mission').textContent=s.day+'일차 미션 완료!';
+  fetch('https://script.google.com/macros/s/AKfycbzL2nuyqOoK8FHvBkbYUR6F7pKnJ4eRAv6ItCmj9pTHhKgbYBksk7DWWrLY-ujEnhJctg/exec',{method:'POST',body:JSON.stringify({name:name,day:s.day,goal:s.hour+'h',actual:eh+'h '+em+'m',startTime:formatDateTime(new Date(s.startTime)),endTime:formatDateTime(new Date(now))})}).catch(function(){});
+  localStorage.setItem('grp_fast_end',now.toString());
+  localStorage.setItem('grp_last_hour',s.hour.toString());
+  localStorage.setItem('grp_last_day',s.day.toString());
+  localStorage.setItem('grp_actual_hour',eh.toString());
   localStorage.removeItem('grp_session');
-  loadCompletedDays();
+  if(timerInterval)clearInterval(timerInterval);
+  if(parseInt(s.day)===6){show('screen-card');setTimeout(function(){loadResultScreen();},500);}
+  else{show('screen-card');}
 }
 
-function resetAll() {
-  if (confirm('정말 초기화할까요?\n이전 기록이 모두 사라집니다.')) {
-    localStorage.removeItem('grp_session');
-    localStorage.removeItem('grp_round');
-    localStorage.removeItem('grp_name');
-    localStorage.removeItem('grp_symptom_checked');
-    show('screen-home');
-  }
-}
+function goToEating(){show('screen-eating');startEatingDisplay();}
 
-function selectDay(d) {
-  selectedDay = d;
-  loadCompletedDays();
-}
-
-function selectHour(h) {
-  selectedHour = h;
-  document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
-  document.getElementById('h' + h).classList.add('selected');
-}
-
-function restoreSession() {
-  const saved = localStorage.getItem('grp_session');
-  if (saved) {
-    const s = JSON.parse(saved);
-    selectedDay = s.day;
-    selectedHour = s.hour;
-    loadCompletedDays();
-    selectHour(s.hour);
-    show('screen-timer');
-    startTimerDisplay(s.startTime, s.hour, s.day);
-  }
-}
-
-function startFastingManual() {
-  if (!selectedDay) { alert('DAY를 선택해 주세요!'); return; }
-  if (!selectedHour) { alert('단식 시간을 선택해 주세요!'); return; }
-  const h = parseInt(document.getElementById('manual-hour').value);
-  const m = parseInt(document.getElementById('manual-min').value);
-  if (isNaN(h) || isNaN(m)) { alert('시작 시간을 입력해 주세요!'); return; }
-  if (h < 0 || h > 23 || m < 0 || m > 59) { alert('올바른 시간을 입력해 주세요!'); return; }
-  const now = new Date();
-  // 오늘 해당 시간으로 먼저 시도
-  let startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0).getTime();
-  // 오늘 시간이 현재보다 미래면 어제로
-  if (startTime > now.getTime()) {
-    startTime = startTime - 24 * 3600000;
-  }
-  const session = { day: selectedDay, hour: selectedHour, startTime: startTime };
-  localStorage.setItem('grp_session', JSON.stringify(session));
-  show('screen-timer');
-  startTimerDisplay(startTime, selectedHour, selectedDay);
-}
-
-function startFasting() {
-  if (!selectedDay) { alert('DAY를 선택해 주세요!'); return; }
-  if (!selectedHour) { alert('단식 시간을 선택해 주세요!'); return; }
-  const now = new Date().getTime();
-  const session = { day: selectedDay, hour: selectedHour, startTime: now };
-  localStorage.setItem('grp_session', JSON.stringify(session));
-  show('screen-timer');
-  startTimerDisplay(now, selectedHour, selectedDay);
-}
-
-function startTimerDisplay(startTime, hour, day) {
-  const name = localStorage.getItem('grp_name');
-  document.getElementById('t-day').textContent = 'DAY ' + day;
-  document.getElementById('t-name').textContent = name;
-  document.getElementById('t-goal-badge').textContent = '단식 목표시간 ' + hour + 'h 중';
-  const endTime = startTime + hour * 3600000;
-
-  function update() {
-    const now = new Date().getTime();
-    const elapsed = now - startTime;
-    const eh = Math.floor(elapsed / 3600000);
-    const em = Math.floor((elapsed % 3600000) / 60000);
-    document.getElementById('t-start').textContent = '단식 시작: ' + formatDateTime(new Date(startTime));
-    document.getElementById('t-elapsed').textContent = eh + '시간 ' + em + '분';
-
-    const endDate = new Date(endTime);
-    document.getElementById('t-end').textContent = '완료 예정: ' + formatDateTime(endDate);
-    document.getElementById('t-end-date').textContent = '';
-  }
-  update();
-  if (timerInterval) clearInterval(timerInterval);
-  timerInterval = setInterval(update, 30000);
-}
-
-function completeFasting() {
-  const saved = localStorage.getItem('grp_session');
-  if (!saved) return;
-  const s = JSON.parse(saved);
-  const now = new Date().getTime();
-  const elapsed = now - s.startTime;
-  const eh = Math.floor(elapsed / 3600000);
-  const em = Math.floor((elapsed % 3600000) / 60000);
-  const name = localStorage.getItem('grp_name');
-
-  document.getElementById('c-name').textContent = name;
-  document.getElementById('c-day').textContent = s.day;
-  document.getElementById('c-goal').textContent = s.hour + 'h';
-  document.getElementById('c-actual').textContent = eh + 'h ' + em + 'm';
-  document.getElementById('c-start').textContent = formatTime(new Date(s.startTime));
-  document.getElementById('c-end').textContent = formatTime(new Date(now));
-  document.getElementById('c-mission').textContent = s.day + '일차 미션 완료!';
-
-  // 구글 시트 자동 전송
-  fetch('https://script.google.com/macros/s/AKfycbzL2nuyqOoK8FHvBkbYUR6F7pKnJ4eRAv6ItCmj9pTHhKgbYBksk7DWWrLY-ujEnhJctg/exec', {
-    method: 'POST',
-    body: JSON.stringify({
-      name: name,
-      day: s.day,
-      goal: s.hour + 'h',
-      actual: eh + 'h ' + em + 'm',
-      startTime: formatDateTime(new Date(s.startTime)),
-      endTime: formatDateTime(new Date(now))
-    })
-  }).catch(function() {});
-
-  localStorage.setItem('grp_fast_end', now.toString());
-  localStorage.setItem('grp_last_hour', s.hour.toString());
-  localStorage.setItem('grp_last_day', s.day.toString());
-  localStorage.setItem('grp_actual_hour', eh.toString());
-  localStorage.setItem('grp_actual_min', em.toString());
-  localStorage.removeItem('grp_session');
-  if (timerInterval) clearInterval(timerInterval);
-
-  // DAY6 완료면 결과 화면으로
-  if (parseInt(s.day) === 6) {
-    show('screen-card');
-    setTimeout(() => loadResultScreen(), 500);
-  } else {
-    show('screen-card');
-  }
-}
-
-let eatingInterval = null;
-
-function goToEating() {
-  show('screen-eating');
-  startEatingDisplay();
-}
-
-function startEatingDisplay() {
-  const endTime = parseInt(localStorage.getItem('grp_fast_end') || '0');
-  const actualH = parseInt(localStorage.getItem('grp_actual_hour') || localStorage.getItem('grp_last_hour') || '16');
-  const fastHour = parseInt(localStorage.getItem('grp_last_hour') || '16');
-  const lastDay = localStorage.getItem('grp_last_day') || '';
-  const name = localStorage.getItem('grp_name') || '';
-  if (!endTime) return;
-
-  const eatHours = Math.max(24 - actualH, 1);
-  const nextFastTime = endTime + eatHours * 3600000;
-
-  document.getElementById('eating-day').textContent = lastDay ? 'DAY ' + lastDay : '';
-  document.getElementById('eating-name').textContent = name;
-  document.getElementById('eating-calc').textContent = '24h - ' + actualH + 'h 단식 = ' + eatHours + 'h 식사 가능';
-
-  function update() {
-    const now = new Date().getTime();
-    const timeToNext = nextFastTime - now;
-
-    if (timeToNext > 0) {
-      const rh = Math.floor(timeToNext / 3600000);
-      const rm = Math.floor((timeToNext % 3600000) / 60000);
-      const progress = ((eatHours * 3600000 - timeToNext) / (eatHours * 3600000)) * 100;
-
-      document.getElementById('eating-h').textContent = rh;
-      document.getElementById('eating-m').textContent = rm;
-      document.getElementById('eating-status').textContent = '남았습니다';
-      document.getElementById('eating-progress').style.width = Math.min(progress, 100) + '%';
-      document.getElementById('eating-next').textContent = formatNextFastTime(new Date(nextFastTime));
-    } else {
-      const overH = Math.floor(Math.abs(timeToNext) / 3600000);
-      const overM = Math.floor((Math.abs(timeToNext) % 3600000) / 60000);
-      document.getElementById('eating-h').textContent = overH;
-      document.getElementById('eating-m').textContent = overM;
-      document.getElementById('eating-status').textContent = '단식 시작 예정 시간이 지났어요';
-      document.getElementById('eating-status').style.color = '#f87171';
-      document.getElementById('eating-h').style.color = '#f87171';
-      document.getElementById('eating-m').style.color = '#f87171';
-      document.getElementById('eating-progress').style.width = '100%';
-      document.getElementById('eating-progress').style.background = '#f87171';
-      document.getElementById('eating-next').textContent = '지금 바로 단식을 시작해 주세요!';
+function startEatingDisplay(){
+  var endTime=parseInt(localStorage.getItem('grp_fast_end')||'0');
+  var actualH=parseInt(localStorage.getItem('grp_actual_hour')||localStorage.getItem('grp_last_hour')||'16');
+  var lastDay=localStorage.getItem('grp_last_day')||'';
+  var name=localStorage.getItem('grp_name')||'';
+  if(!endTime)return;
+  var eatHours=Math.max(24-actualH,1);
+  var nextFastTime=endTime+eatHours*3600000;
+  document.getElementById('eating-day').textContent=lastDay?'DAY '+lastDay:'';
+  document.getElementById('eating-name').textContent=name;
+  document.getElementById('eating-calc').textContent='24h - '+actualH+'h 단식 = '+eatHours+'h 식사 가능';
+  function update(){
+    var now=new Date().getTime();var timeToNext=nextFastTime-now;
+    if(timeToNext>0){
+      var rh=Math.floor(timeToNext/3600000);var rm=Math.floor((timeToNext%3600000)/60000);
+      var progress=((eatHours*3600000-timeToNext)/(eatHours*3600000))*100;
+      document.getElementById('eating-h').textContent=rh;document.getElementById('eating-m').textContent=rm;
+      document.getElementById('eating-status').textContent='남았습니다';document.getElementById('eating-status').style.color='#4ade80';
+      document.getElementById('eating-h').style.color='#4ade80';document.getElementById('eating-m').style.color='#4ade80';
+      document.getElementById('eating-progress').style.width=Math.min(progress,100)+'%';document.getElementById('eating-progress').style.background='#4ade80';
+      document.getElementById('eating-next').textContent=formatNextFastTime(new Date(nextFastTime));
+    }else{
+      var overH=Math.floor(Math.abs(timeToNext)/3600000);var overM=Math.floor((Math.abs(timeToNext)%3600000)/60000);
+      document.getElementById('eating-h').textContent=overH;document.getElementById('eating-m').textContent=overM;
+      document.getElementById('eating-status').textContent='단식 시작 예정 시간이 지났어요';document.getElementById('eating-status').style.color='#f87171';
+      document.getElementById('eating-h').style.color='#f87171';document.getElementById('eating-m').style.color='#f87171';
+      document.getElementById('eating-progress').style.width='100%';document.getElementById('eating-progress').style.background='#f87171';
+      document.getElementById('eating-next').textContent='지금 바로 단식을 시작해 주세요!';
     }
   }
-  update();
-  if (eatingInterval) clearInterval(eatingInterval);
-  eatingInterval = setInterval(update, 30000);
+  update();if(eatingInterval)clearInterval(eatingInterval);eatingInterval=setInterval(update,30000);
 }
 
-function formatNextFastTime(d) {
-  const days = ['일', '월', '화', '수', '목', '금', '토'];
-  const month = d.getMonth() + 1;
-  const date = d.getDate();
-  const day = days[d.getDay()];
-  const h = d.getHours();
-  const m = String(d.getMinutes()).padStart(2, '0');
-  const ampm = h < 12 ? '오전' : '오후';
-  const hh = h % 12 || 12;
-  return month + '월 ' + date + '일 (' + day + ') ' + ampm + ' ' + hh + ':' + m;
-}
+function formatNextFastTime(d){var days=['일','월','화','수','목','금','토'];var month=d.getMonth()+1;var date=d.getDate();var day=days[d.getDay()];var h=d.getHours();var m=String(d.getMinutes()).padStart(2,'0');var ampm=h<12?'오전':'오후';var hh=h%12||12;return month+'월 '+date+'일 ('+day+') '+ampm+' '+hh+':'+m;}
 
-function loadResultScreen() {
-  const name = localStorage.getItem('grp_name') || '';
-  const round = parseInt(localStorage.getItem('grp_round') || '1');
-
-  const roundNames = ['첫', '두', '세', '네', '다섯', '여섯', '일곱'];
-  const roundName = (round <= 7 ? roundNames[round-1] : round) + '번째';
-
-  document.getElementById('result-name-label').textContent = name + '님의';
-  document.getElementById('result-round-title').textContent = roundName + ' 장 대사 리셋';
-
-  fetch('https://script.google.com/macros/s/AKfycbw3KwnLFc_r_494ExmLrtU7M58rEx1qqRhIlSFGQBRgoVD-DKnqhklwRgYQAuQB6ZwO8A/exec?name=' + encodeURIComponent(name))
-    .then(r => r.json())
-    .then(data => {
-      if (!data.length) return;
-
-      // 기간 계산
-      const startDate = data[0].startTime ? parseSheetDate(data[0].startTime) : null;
-      const endDate = data[data.length-1].endTime ? parseSheetDate(data[data.length-1].endTime) : null;
-      if (startDate && endDate) {
-        document.getElementById('result-period').textContent =
-          formatShortDate(startDate) + ' — ' + formatShortDate(endDate);
-      }
-
-      // DAY별 실제 단식 시간
-      const dayMap = {};
-      data.forEach(d => {
-        const day = parseInt(d.day);
-        const mins = parseActualMins(d.actual);
-        if (!dayMap[day] || mins > dayMap[day]) dayMap[day] = mins;
-      });
-
-      // 바차트 그리기
-      const maxMins = Math.max(...Object.values(dayMap), 16*60);
-      const chartHtml = drawBarChart(dayMap, maxMins);
-      document.getElementById('result-chart').innerHTML = chartHtml;
-
-      // 누적 시간
-      const totalMins = Object.values(dayMap).reduce((a, b) => a + b, 0);
-      const totalH = Math.floor(totalMins / 60);
-      const totalM = totalMins % 60;
-      document.getElementById('result-total-h').textContent = totalH;
-      document.getElementById('result-total-m').textContent = totalM > 0 ? totalM + 'm' : '';
-
+function loadResultScreen(){
+  var name=localStorage.getItem('grp_name')||'';
+  var round=parseInt(localStorage.getItem('grp_round')||'1');
+  var roundNames=['첫','두','세','네','다섯','여섯','일곱'];
+  var roundName=(round<=7?roundNames[round-1]:round)+'번째';
+  document.getElementById('result-name-label').textContent=name+'님의';
+  document.getElementById('result-round-title').textContent=roundName+' 장 대사 리셋';
+  fetch('https://script.google.com/macros/s/AKfycbw3KwnLFc_r_494ExmLrtU7M58rEx1qqRhIlSFGQBRgoVD-DKnqhklwRgYQAuQB6ZwO8A/exec?name='+encodeURIComponent(name)+'&round='+round)
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(!data.length){show('screen-result');return;}
+      var startDate=data[0].startTime?parseSheetDate(data[0].startTime):null;
+      var endDate=data[data.length-1].endTime?parseSheetDate(data[data.length-1].endTime):null;
+      if(startDate&&endDate)document.getElementById('result-period').textContent=formatShortDate(startDate)+' — '+formatShortDate(endDate);
+      var dayMap={};
+      data.forEach(function(d){var day=parseInt(d.day);var mins=parseActualMins(d.actual);if(!dayMap[day]||mins>dayMap[day])dayMap[day]=mins;});
+      var vals=Object.values(dayMap);
+      var maxMins=vals.length>0?Math.max.apply(null,vals.concat([16*60])):16*60;
+      document.getElementById('result-chart').innerHTML=drawBarChart(dayMap,maxMins);
+      var totalMins=vals.reduce(function(a,b){return a+b;},0);
+      document.getElementById('result-total-h').textContent=Math.floor(totalMins/60);
+      document.getElementById('result-total-m').textContent=totalMins%60>0?(totalMins%60)+'m':'';
       show('screen-result');
-    })
-    .catch(() => { show('screen-result'); });
+    }).catch(function(){show('screen-result');});
 }
 
-function drawBarChart(dayMap, maxMins) {
-  const days = [1,2,3,4,5,6];
-  const barWidth = 36;
-  const gap = 12;
-  const chartH = 120;
-  const totalW = days.length * (barWidth + gap) - gap;
-
-  const bars = days.map((day, i) => {
-    const mins = dayMap[day] || 0;
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
-    const barH = mins > 0 ? Math.max((mins / maxMins) * chartH, 20) : 4;
-    const x = i * (barWidth + gap);
-    const y = chartH - barH;
-
-    const labelText = mins > 0 ? '<text x="' + (x + barWidth/2) + '" y="' + (y - 4) + '" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="DM Sans, sans-serif">' + h + 'h</text>' + (m > 0 ? '<text x="' + (x + barWidth/2) + '" y="' + (y + 8) + '" text-anchor="middle" fill="#aaa" font-size="9" font-family="DM Sans, sans-serif">' + m + 'm</text>' : '') : '';
-    return '<g>' +
-      '<rect x="' + x + '" y="' + y + '" width="' + barWidth + '" height="' + barH + '" rx="6" fill="' + (mins > 0 ? '#9377f4' : '#2a2a2a') + '"/>' +
-      labelText +
-      '<text x="' + (x + barWidth/2) + '" y="' + (chartH + 16) + '" text-anchor="middle" fill="#555" font-size="10" font-family="DM Sans, sans-serif">DAY ' + day + '</text>' +
-      '</g>';
+function drawBarChart(dayMap,maxMins){
+  var days=[1,2,3,4,5,6];var barWidth=36;var gap=12;var chartH=120;var totalW=days.length*(barWidth+gap)-gap;
+  var bars=days.map(function(day,i){
+    var mins=dayMap[day]||0;var h=Math.floor(mins/60);var m=mins%60;
+    var barH=mins>0?Math.max((mins/maxMins)*chartH,20):4;var x=i*(barWidth+gap);var y=chartH-barH;
+    var label=mins>0?'<text x="'+(x+barWidth/2)+'" y="'+(y-4)+'" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="DM Sans,sans-serif">'+h+'h</text>'+(m>0?'<text x="'+(x+barWidth/2)+'" y="'+(y+8)+'" text-anchor="middle" fill="#aaa" font-size="9" font-family="DM Sans,sans-serif">'+m+'m</text>':''):'';
+    return '<g><rect x="'+x+'" y="'+y+'" width="'+barWidth+'" height="'+barH+'" rx="6" fill="'+(mins>0?'#9377f4':'#2a2a2a')+'"/>'+label+'<text x="'+(x+barWidth/2)+'" y="'+(chartH+16)+'" text-anchor="middle" fill="#555" font-size="10" font-family="DM Sans,sans-serif">DAY '+day+'</text></g>';
   }).join('');
-
-  return `<svg width="100%" viewBox="0 0 ${totalW} ${chartH + 24}" xmlns="http://www.w3.org/2000/svg">
-    <line x1="0" y1="0" x2="${totalW}" y2="0" stroke="#2a2a2a" stroke-width="0.5"/>
-    ${bars}
-  </svg>`;
+  return '<svg width="100%" viewBox="0 0 '+totalW+' '+(chartH+24)+'" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="'+totalW+'" y2="0" stroke="#2a2a2a" stroke-width="0.5"/>'+bars+'</svg>';
 }
 
-function parseActualMins(actual) {
-  if (!actual) return 0;
-  const match = actual.match(/(\d+)h\s*(\d+)?m?/);
-  if (!match) return 0;
-  return (parseInt(match[1]) || 0) * 60 + (parseInt(match[2]) || 0);
+function parseActualMins(actual){if(!actual)return 0;var match=actual.match(/(\d+)h\s*(\d+)?m?/);if(!match)return 0;return(parseInt(match[1])||0)*60+(parseInt(match[2])||0);}
+function parseSheetDate(str){if(!str)return null;if(str.includes('T'))return new Date(str);try{var now=new Date();var mm=str.match(/(\d+)월/);var dm=str.match(/(\d+)일/);var isPm=str.includes('오후');var tm=str.match(/(\d+):(\d+)/);if(!mm||!dm||!tm)return null;var h=parseInt(tm[1]);var m=parseInt(tm[2]);if(isPm&&h!==12)h+=12;if(!isPm&&h===12)h=0;return new Date(now.getFullYear(),parseInt(mm[1])-1,parseInt(dm[1]),h,m);}catch(e){return null;}}
+function formatShortDate(d){if(!d)return '';return(d.getMonth()+1)+'.'+String(d.getDate()).padStart(2,'0');}
+function saveResultImage(){alert('이미지 저장 기능은 준비 중이에요!\n스크린샷으로 저장해 주세요 📸');}
+
+function loadHistory(){
+  var name=localStorage.getItem('grp_name')||'';
+  var list=document.getElementById('history-list');
+  list.innerHTML='<div style="color:#555;font-size:13px;text-align:center;">불러오는 중...</div>';
+  fetch('https://script.google.com/macros/s/AKfycbw3KwnLFc_r_494ExmLrtU7M58rEx1qqRhIlSFGQBRgoVD-DKnqhklwRgYQAuQB6ZwO8A/exec?name='+encodeURIComponent(name))
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(!data.length){list.innerHTML='<div style="color:#555;font-size:13px;text-align:center;">아직 기록이 없어요!</div>';return;}
+      list.innerHTML=data.map(function(d){
+        var s=formatDateTimeFromISO(d.startTime);var e=formatDateTimeFromISO(d.endTime);
+        return '<div style="background:#111;border:0.5px solid #222;border-radius:16px;padding:1.5rem;margin-bottom:12px;">'+
+          '<div style="color:#9377f4;font-size:12px;font-weight:600;margin-bottom:8px;">DAY '+d.day+' 단식 기록</div>'+
+          '<div style="display:flex;gap:8px;margin-bottom:1rem;">'+
+          '<div style="background:#1a1a1a;border:1px solid #9377f4;border-radius:8px;padding:8px 14px;text-align:center;"><div style="color:#555;font-size:10px;">DAY</div><div style="color:#9377f4;font-size:18px;font-weight:700;">'+d.day+'</div></div>'+
+          '<div style="background:#1a1a1a;border-radius:8px;padding:8px 14px;text-align:center;"><div style="color:#555;font-size:10px;">목표</div><div style="color:#fff;font-size:18px;font-weight:700;">'+d.goal+'</div></div>'+
+          '<div style="background:#1a1a1a;border-radius:8px;padding:8px 14px;text-align:center;flex:1;"><div style="color:#555;font-size:10px;">실제</div><div style="color:#fff;font-size:18px;font-weight:700;">'+d.actual+'</div></div>'+
+          '</div>'+
+          '<div style="background:#1a1a1a;border-radius:8px;padding:10px 14px;">'+
+          '<div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#666;font-size:12px;">시작</span><span style="color:#fff;font-size:12px;">'+s+'</span></div>'+
+          '<div style="display:flex;justify-content:space-between;"><span style="color:#666;font-size:12px;">완료</span><span style="color:#9377f4;font-size:12px;font-weight:500;">'+e+'</span></div>'+
+          '</div></div>';
+      }).join('');
+    }).catch(function(){list.innerHTML='<div style="color:#555;font-size:13px;text-align:center;">기록을 불러올 수 없어요 😢</div>';});
 }
 
-function parseSheetDate(str) {
-  if (!str) return null;
-  if (str.includes('T')) return new Date(str);
-  // "5월 3일 오후 4:09" 형식
-  try {
-    const now = new Date();
-    const year = now.getFullYear();
-    const monthMatch = str.match(/(\d+)월/);
-    const dayMatch = str.match(/(\d+)일/);
-    const isPm = str.includes('오후');
-    const timeMatch = str.match(/(\d+):(\d+)/);
-    if (!monthMatch || !dayMatch || !timeMatch) return null;
-    let h = parseInt(timeMatch[1]);
-    const m = parseInt(timeMatch[2]);
-    if (isPm && h !== 12) h += 12;
-    if (!isPm && h === 12) h = 0;
-    return new Date(year, parseInt(monthMatch[1])-1, parseInt(dayMatch[1]), h, m);
-  } catch(e) { return null; }
-}
-
-function formatShortDate(d) {
-  if (!d) return '';
-  return (d.getMonth()+1) + '.' + String(d.getDate()).padStart(2,'0');
-}
-
-function saveResultImage() {
-  alert('이미지 저장 기능은 준비 중이에요!\n스크린샷으로 저장해 주세요 📸');
-}
-
-function loadHistory() {
-  const name = localStorage.getItem('grp_name') || '';
-  const list = document.getElementById('history-list');
-  list.innerHTML = '<div style="color:#555;font-size:13px;text-align:center;">불러오는 중...</div>';
-  fetch('https://script.google.com/macros/s/AKfycbw3KwnLFc_r_494ExmLrtU7M58rEx1qqRhIlSFGQBRgoVD-DKnqhklwRgYQAuQB6ZwO8A/exec?name=' + encodeURIComponent(name))
-    .then(r => r.json())
-    .then(data => {
-      if (!data.length) {
-        list.innerHTML = '<div style="color:#555;font-size:13px;text-align:center;">아직 기록이 없어요!</div>';
-        return;
-      }
-      list.innerHTML = data.map(d => {
-        const startStr = formatDateTimeFromISO(d.startTime);
-        const endStr = formatDateTimeFromISO(d.endTime);
-        return `
-        <div style="background:#111;border:0.5px solid #222;border-radius:16px;padding:1.5rem;margin-bottom:12px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:1rem;">
-            <div style="width:6px;height:6px;border-radius:50%;background:#9377f4;"></div>
-            <span style="color:#9377f4;font-size:11px;letter-spacing:0.08em;">good routine project</span>
-          </div>
-          <div style="color:#9377f4;font-size:12px;font-weight:600;margin-bottom:4px;">${d.day}일차 단식 기록</div>
-          <div style="display:flex;gap:8px;margin-bottom:1rem;">
-            <div style="background:#1a1a1a;border:1px solid #9377f4;border-radius:8px;padding:8px 14px;text-align:center;">
-              <div style="color:#555;font-size:10px;margin-bottom:3px;">DAY</div>
-              <div style="color:#9377f4;font-size:18px;font-weight:700;">${d.day}</div>
-            </div>
-            <div style="background:#1a1a1a;border-radius:8px;padding:8px 14px;text-align:center;">
-              <div style="color:#555;font-size:10px;margin-bottom:3px;">목표</div>
-              <div style="color:#fff;font-size:18px;font-weight:700;">${d.goal}</div>
-            </div>
-            <div style="background:#1a1a1a;border-radius:8px;padding:8px 14px;text-align:center;flex:1;">
-              <div style="color:#555;font-size:10px;margin-bottom:3px;">실제 단식</div>
-              <div style="color:#fff;font-size:18px;font-weight:700;">${d.actual}</div>
-            </div>
-          </div>
-          <div style="background:#1a1a1a;border-radius:8px;padding:10px 14px;">
-            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-              <span style="color:#666;font-size:12px;">시작</span>
-              <span style="color:#fff;font-size:12px;">${startStr}</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;">
-              <span style="color:#666;font-size:12px;">완료</span>
-              <span style="color:#9377f4;font-size:12px;font-weight:500;">${endStr}</span>
-            </div>
-          </div>
-        </div>
-      `}).join('');
-    })
-    .catch(() => {
-      list.innerHTML = '<div style="color:#555;font-size:13px;text-align:center;">기록을 불러올 수 없어요 😢</div>';
-    });
-}
-
-function formatDateTimeFromISO(str) {
-  if (!str) return '-';
-  // ISO 형식이면 변환
-  if (str.includes('T')) {
-    const d = new Date(str);
-    return formatDateTime(d);
-  }
-  return str;
-}
-
-function goToSelect() {
-  selectedDay = null;
-  selectedHour = null;
-  localStorage.removeItem('grp_session');
-  if (timerInterval) clearInterval(timerInterval);
-  show('screen-select');
-  loadCompletedDays();
-  document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
-}
-
-function showHome() {
-  selectedDay = null;
-  selectedHour = null;
-  localStorage.removeItem('grp_session');
-  if (timerInterval) clearInterval(timerInterval);
-  show('screen-home');
-}
-
-function show(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function formatDateTime(d) {
-  const month = d.getMonth() + 1;
-  const date = d.getDate();
-  const h = d.getHours();
-  const m = String(d.getMinutes()).padStart(2, '0');
-  const ampm = h < 12 ? '오전' : '오후';
-  const hh = h % 12 || 12;
-  return month + '월 ' + date + '일 ' + ampm + ' ' + hh + ':' + m;
-}
-
-function formatTime(d) {
-  const h = d.getHours();
-  const m = String(d.getMinutes()).padStart(2, '0');
-  const ampm = h < 12 ? '오전' : '오후';
-  const hh = h % 12 || 12;
-  return ampm + ' ' + hh + ':' + m;
-}
-
-function formatDate(d) {
-  return (d.getMonth()+1) + '월 ' + d.getDate() + '일';
-}
+function formatDateTimeFromISO(str){if(!str)return '-';if(str.includes('T'))return formatDateTime(new Date(str));return str;}
+function goToSelect(){selectedDay=null;selectedHour=null;localStorage.removeItem('grp_session');if(timerInterval)clearInterval(timerInterval);show('screen-select');loadCompletedDays();document.querySelectorAll('.hour-btn').forEach(function(b){b.classList.remove('selected');});}
+function showHome(){selectedDay=null;selectedHour=null;localStorage.removeItem('grp_session');if(timerInterval)clearInterval(timerInterval);show('screen-home');}
+function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});document.getElementById(id).classList.add('active');}
+function formatDateTime(d){var month=d.getMonth()+1;var date=d.getDate();var h=d.getHours();var m=String(d.getMinutes()).padStart(2,'0');var ampm=h<12?'오전':'오후';var hh=h%12||12;return month+'월 '+date+'일 '+ampm+' '+hh+':'+m;}
+function formatTime(d){var h=d.getHours();var m=String(d.getMinutes()).padStart(2,'0');var ampm=h<12?'오전':'오후';var hh=h%12||12;return ampm+' '+hh+':'+m;}
 </script>
 </body>
 </html>
