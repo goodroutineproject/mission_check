@@ -343,6 +343,21 @@ function goToSetup() {
   }
 }
 
+function showDayDetail(d) {
+  alert('DAY ' + d.day + '\n목표: ' + d.goal + '\n실제 단식: ' + d.actual + '\n시작: ' + d.startTime + '\n완료: ' + d.endTime);
+}
+
+function goToSetup() {
+  const name = localStorage.getItem('grp_name');
+  if (!name) {
+    show('screen-name');
+  } else {
+    show('screen-select');
+    loadCompletedDays();
+    restoreSession();
+  }
+}
+
 function loadCompletedDays() {
   const name = localStorage.getItem('grp_name');
   const round = localStorage.getItem('grp_round') || '1';
